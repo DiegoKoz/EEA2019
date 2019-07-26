@@ -1,9 +1,12 @@
 
 ## Notas de Clase:
 
-### [Clase 1](clase 1/Clase 1- Introduccion.nb.html):
+### Clase 1:
 
-- Introducción al entorno R.
+- [Introducción al entorno R.](clase 1/Clase 1- Introduccion.nb.html)
+- [Ejercicios intro.](clase 1/Ejercicios - Clase 1.R)
+- [Programación funcional.](clase 1/Clase_1-Programacion funcional.nb)
+- [Ejercicios programación funcional.](clase 1/Ejercicios Clase 1_Programacion funcional.R)
 
 ### [Clase 2](clase 2/Clase 2- Tidyverse.nb.html):
 

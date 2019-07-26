@@ -1,3 +1,17 @@
+---
+title: "Clase 1. Introducción"
+author: "Diego Kozlowski y Juan Barriola"
+date: ""
+output:
+  html_notebook:
+    toc: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
 ```{r, message=FALSE, warning=F, comment=">", highlight=T, include=FALSE, strip.white=T}
 rm(list=ls())
 ```
