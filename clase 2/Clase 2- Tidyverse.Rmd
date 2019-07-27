@@ -9,9 +9,6 @@ output:
     depth: 2
 ---
 
-```{r, warning=FALSE}
-rm(list=ls())
-```
 
 # [Tidyverse](https://www.tidyverse.org/)         
 
@@ -350,12 +347,74 @@ library(ggrepel)   # etiquetas de texto más prolijas que las de ggplot
 library(scales)    # tiene la función 'percent()'
 
 
-ggplot(data = iris, aes(x = Sepal.Length, fill = Species))+
-  geom_histogram(alpha=0.75, binwidth = .5)+
-  facet_wrap(~Species)+
-  labs(title = "Histograma por especie")+
-  theme(legend.position = 'none')
+ggplot(data = iris, aes(x = Petal.Length, Petal.Width, color = Species))+
+  geom_point(alpha=0.75)+
+  labs(title = "Medidas de los pétalos por especie")+
+  theme(legend.position = 'none')+
+  facet_wrap(~Species)
 ```
+## Capas del Gráfico
+Veamos ahora, el "paso a paso" del armado del mismo.          
+
+En primera instancia solo defino los ejes. Y en este caso un color particular para cada Especie.
+```{r}
+g <- ggplot(data = iris, aes(x = Petal.Length, Petal.Width, color = Species))
+g
+```
+Luego, defino el tipo de gráfico. El *alpha* me permite definir la intensidad de los puntos
+```{r}
+g <- g +  geom_point(alpha=0.25)
+g
+```  
+Las siguientes tres capas me permiten respectivamente: 
+ 
+ - Definir el título del gráfico
+ - Quitar la leyenda
+ - Abrir el gráfico en tres fragmentos, uno para cada especie
+
+```{r} 
+g <- g +
+  labs(title = "Medidas de los pétalos por especie")+
+  theme(legend.position = 'none')+
+  facet_wrap(~Species)
+g
+
+```
+
+
+## Extensiones de [GGplot](http://www.ggplot2-exts.org/gallery/).
+
+La librería GGplot tiene a su vez muchas otras librerías que extienden sus potencialidades. Entre nuestras favoritas están:
+
+- [gganimate](https://gganimate.com/): Para hacer gráficos animados.
+- [ggridge](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html): Para hacer gráficos de densidad faceteados
+- [ggally](https://ggobi.github.io/ggally/): Para hacer varios gráficos juntos.
+^
+
+```{r message=FALSE, warning=FALSE}
+library(GGally)
+
+ggpairs(iris,  mapping = aes(color = Species))
+```
+
+
+```{r}
+library(ggridges)
+ggplot(iris, aes(x = Sepal.Length, y = Species, fill=Species)) + 
+  geom_density_ridges()
+```
+
+
+También hay extensiones que te ayudan a escribir el código, como [esquisse](https://dreamrs.github.io/esquisse/)
+
+```{r eval=FALSE}
+
+iris <- iris
+#Correr en la consola
+esquisse::esquisser()
+```
+
+
 
 
 Lo útil de hacer gráficos en R, en lugar de por ejemplo excel, es que podemos hacer uso de más dimensiones, por ejemplo:
