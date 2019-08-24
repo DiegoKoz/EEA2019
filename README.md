@@ -44,6 +44,8 @@
 ### Clase 9:
 
 - [Regresion Logistica](clase 9/logit.nb.html)
+
+
 <!---
 - [Ejercicio Regresion Logistica](clase 9/ejercicio-logistica.nb.html)
  ---> 
