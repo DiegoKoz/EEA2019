@@ -1,8 +1,6 @@
+#### [Materiales clases teóricas](teorica)
 
-
-## [Materiales clases teóricas](teorica)
-
-## Notas de Clase:
+# Materiales para las clases prácticas:
 
 ### Clase 1:
 
@@ -46,7 +44,10 @@
 ### Clase 9:
 
 - [Regresion Logistica](clase 9/logit.nb.html)
+<!---
 - [Ejercicio Regresion Logistica](clase 9/ejercicio-logistica.nb.html)
+ ---> 
+
 
 ### [Clase 10](clase 10/regularizacion.nb.html)
 
