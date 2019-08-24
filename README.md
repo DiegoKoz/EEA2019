@@ -1,4 +1,7 @@
 
+
+## [Materiales clases teóricas](teorica)
+
 ## Notas de Clase:
 
 ### Clase 1:
@@ -61,24 +64,24 @@
 
 - Redes II: Convolutional Neural Networks
 
+<!---
+## Ejercicios
 
-%## Ejercicios
-%
-%- Modelo lineal: 
-%	- [consigna](https://github.com/DiegoKoz/EEA/blob/master/ejercicios_modelo_lineal/Ejercicios%20Modelo%20Lineal.pdf)
-%	- Resueltos:
-%		- [Parte 1](ejercicios_modelo_lineal/parte_1/ejercicios.nb.html)
-%		- [Parte 2](ejercicios_modelo_lineal/parte_2/ejercicios.nb.html)
-%		- [Parte 3](ejercicios_modelo_lineal/parte_3/ejercicios.nb.html)
-%		- [Parte 4](ejercicios_modelo_lineal/parte_4/ejercicios.nb.html)
-%		- [Parte 5](ejercicios_modelo_lineal/parte_5/ejercicios.nb.html)
-%	
-%- Modelo logística:
-%	- [consigna](ejercicio_logistica/ejercicio-logistica.nb.html)
-%	- [datos train](ejercicio_logistica/train.csv)
-%	- [datos test](ejercicio_logistica/test.csv)
-%	- [resultados test](ejercicio_logistica/resultados-titanic.csv)
+- Modelo lineal: 
+	- [consigna](https://github.com/DiegoKoz/EEA/blob/master/ejercicios_modelo_lineal/Ejercicios%20Modelo%20Lineal.pdf)
+	- Resueltos:
+		- [Parte 1](ejercicios_modelo_lineal/parte_1/ejercicios.nb.html)
+		- [Parte 2](ejercicios_modelo_lineal/parte_2/ejercicios.nb.html)
+		- [Parte 3](ejercicios_modelo_lineal/parte_3/ejercicios.nb.html)
+		- [Parte 4](ejercicios_modelo_lineal/parte_4/ejercicios.nb.html)
+		- [Parte 5](ejercicios_modelo_lineal/parte_5/ejercicios.nb.html)
+	
+- Modelo logística:
+	- [consigna](ejercicio_logistica/ejercicio-logistica.nb.html)
+	- [datos train](ejercicio_logistica/train.csv)
+	- [datos test](ejercicio_logistica/test.csv)
+	- [resultados test](ejercicio_logistica/resultados-titanic.csv)
 
-
+ ---> 
 
 [Preguntas parcial](https://images.mentalfloss.com/sites/default/files/styles/mf_image_16x9/public/red-nose-clown-hed.jpg?itok=ZX1GxhNK&resize=1100x1100)
