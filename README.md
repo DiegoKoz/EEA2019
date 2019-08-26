@@ -9,37 +9,36 @@
 - [Programación funcional.](clase 1/Clase_1-Programacion funcional.nb)
 - [Ejercicios programación funcional.](clase 1/Ejercicios Clase 1_Programacion funcional.R)
 
-### [Clase 2](clase 2/Clase 2- Tidyverse.nb.html):
+### Clase 2:
 
-- Tidyverse.
-- Gráficos
+- [Tidyverse y gráficos]((clase 2/Clase 2- Tidyverse.nb.html))
 
 ### Clase 3:
 
 - [Rnotebooks](clase 3/Ej_IPC_dolar.nb.html)
 - [Shiny apps](https://diegokoz.shinyapps.io/overfitting/)
 
-### [Clase 4](clase 4/presentacion.nb.html):
+### Clase 4:
 
-- Correlación
+- Correlación(clase 4/presentacion.nb.html)
 
-### [Clase 5](clase 5/modelo_basico.nb.html):
+### Clase 5:
 
-- Regresión Lineal Simple (primera parte)
+- [Regresión Lineal Simple (primera parte)](clase 5/modelo_basico.nb.html)
 
 ### Clase 6:
 
 - [Regresión Lineal Simple (segunda parte)](clase 6/modelo_basico.nb.html)
 - [Bootstrap](clase 6/ejercicio_bootstrap.nb.html)
 
-### [Clase 7](clase 7/muchos_modelos.html)
+### Clase 7:
 
-- Muchos modelos (primera parte)
+- [Muchos modelos (primera parte)]((clase 7/muchos_modelos.html))
 
 
-### [Clase 8](clase 8/muchos_modelos.html)
+### Clase 8:
 
-- Muchos modelos (segunda parte)
+- [Muchos modelos (segunda parte)]((clase 8/muchos_modelos.html))
 
 ### Clase 9:
 
@@ -51,21 +50,21 @@
  ---> 
 
 
-### [Clase 10](clase 10/regularizacion.nb.html)
+### Clase 10:
 
-- Regularizacion: Ridge, Lasso y Elastic Net
+- [Regularizacion: Ridge, Lasso y Elastic Net]((clase 10/regularizacion.nb.html))
 
-### [Clase 11](clase 11/prophet_shopping.nb.html)
+### Clase 11:
 
-- Prophet: implementacion de GAM para series de tiempo
+- [Prophet: implementacion de GAM para series de tiempo](clase 11/prophet_shopping.nb.html)
 
-### [Clase 12](clase 12/mnist101.nb.html)
+### Clase 12:
 
-- Redes I: Fully Conected Neural Networks
+- [Redes I: Fully Conected Neural Networks](clase 12/mnist101.nb.html)
 
-### [Clase 13](clase 13/mnist102.nb.html)
+### Clase 13:
 
-- Redes II: Convolutional Neural Networks
+- [Redes II: Convolutional Neural Networks](clase 13/mnist102.nb.html)
 
 <!---
 ## Ejercicios
