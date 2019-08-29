@@ -33,12 +33,12 @@
 
 ### Clase 7:
 
-- [Muchos modelos (primera parte)]((clase 7/muchos_modelos.html))
+- [Muchos modelos (primera parte)](clase 7/muchos_modelos.html)
 
 
 ### Clase 8:
 
-- [Muchos modelos (segunda parte)]((clase 8/muchos_modelos.html))
+- [Muchos modelos (segunda parte)](clase 8/muchos_modelos.html)
 
 ### Clase 9:
 
