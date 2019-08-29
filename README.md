@@ -52,7 +52,7 @@
 
 ### Clase 10:
 
-- [Regularizacion: Ridge, Lasso y Elastic Net]((clase 10/regularizacion.nb.html))
+- [Regularizacion: Ridge, Lasso y Elastic Net](clase 10/regularizacion.nb.html)
 
 ### Clase 11:
 
