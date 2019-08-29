@@ -20,7 +20,7 @@
 
 ### Clase 4:
 
-- Correlación(clase 4/presentacion.nb.html)
+- [Correlación](clase 4/presentacion.nb.html)
 
 ### Clase 5:
 
