@@ -77,10 +77,10 @@ server <- function (input, output) {
   
   
   output$eq1 <- renderUI({
-    eq <- paste0("\\hat{y}  = \\beta_0")
+    eq <- paste0("\\hat{y}  = \\hat{\\beta_0}")
     
     for (i in c(1:input$deg1)) {
-      eq <- paste0(eq, '+ \\beta_{',i,'}','x^{',i,'}')
+      eq <- paste0(eq, '+ \\hat{\\beta_{',i,'}}','x^{',i,'}')
       
     }
     withMathJax(
