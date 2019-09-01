@@ -11,7 +11,7 @@
 
 ### Clase 2:
 
-- [Tidyverse y gráficos]((clase 2/Clase 2- Tidyverse.nb.html))
+- [Tidyverse y gráficos](clase 2/Clase 2- Tidyverse.nb.html)
 
 ### Clase 3:
 
