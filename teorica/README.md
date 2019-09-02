@@ -3,6 +3,9 @@
 ## Materiales para clases teóricas:
 
 ### [primeras clases](EEA primeras clases.pdf)
+### [Ejemplo overfitting](Overfitting Avoiding With NN ultimo 2019R.R)
+
+
 ### [Regresión lineal](http://mate.dm.uba.ar/~meszre/apunte_regresion_lineal_szretter.pdf)
 
 
