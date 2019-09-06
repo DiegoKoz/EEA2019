@@ -11,6 +11,13 @@ output:
   pdf_document:
     toc: yes
 ---
+<style type="text/css">
+div.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 
 ```{r, message=FALSE, warning=F, comment=">", highlight=T, include=FALSE, strip.white=T}
 rm(list=ls())
@@ -290,7 +297,7 @@ C
 
 sumarle  1 al primer elemento, 2 al segundo, y 3 al tercer elemento del __vector__ anterior
 ```{r}
-D <- C + 1:3 #esto es equivalente a hacer 3+1, 5+2, 6+9 
+D <- C + 1:3 #esto es equivalente a hacer 3+1, 5+2, 6+3
 D
 ```
 
@@ -313,7 +320,7 @@ v3
 
 Puede contener datos tipo "character"
 ```{r}
-E <- c("Julia","Hadley","Guido")
+E <- c("Jenny","Hadley","Guido")
 E
 ```
 
@@ -331,10 +338,10 @@ rm(elemento2)
 elemento2
 ```
 
-También podemos cambiar el texto del segundo elemento de E, por el texto "var"
+También podemos cambiar el texto del segundo elemento de E, por el texto "Wes"
 
 ```{r}
-E[2] <- "Pablo"
+E[2] <- "Wes"
 E
 ```
 
@@ -440,191 +447,6 @@ Para acceder un elemento de una lista, podemos utilizar el operador __```$```__,
 ```{r}
 superlista$DF$FECHA[2]
 ```
-
-# Loops, condicionales y funciones
-
-## Loops
-
-Un __loop__ es una estructura de código que nos permite recorrer iterativamente un conjunto de comandos, variando algún elemento. Por ejemplo:
-
-```{r}
-
-for(i in 1:10){
-  Cuadrados<- i^2
-  print(Cuadrados)
-}
-
-```
-
-esto se lee como : Para i, que toma los valores de 1 a 10: 
-
-- Calcula el cuadrado de i y definilo como _Cuadrado_
-- Imprimí a _Cuadrado_
-
-También se puede tomar una lista de valores cualesquiera. Por ejemplo reutilizar datos de un dataframe:
-
-```{r}
-Datos
-unique(Datos$GRUPO)
-for(variable in unique(Datos$GRUPO)){
-  print(Datos[Datos$GRUPO == variable,])
-}
-
-```
-
-__Bonus Track:__ Podemos agregar una barra de progreso en nuestro loop
-
-\\ 
-En un Rnotebook no sirve de mucho, pero en un script puede ser útil para loop largos. Sobretodo, es útil cuando tengamos loops adentro de funciones
-
-
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-iterator <- c(1:10)
-pb <- txtProgressBar(min = 0, max = length(iterator), style = 3)  
-stepi =1
-for(i in iterator){
-  setTxtProgressBar(pb, stepi)
-  stepi = stepi+1
-  Cuadrados<- i^2
-  print(Cuadrados)
-}
-close(pb)
-
-```
-
-
-
-
-## Estructuras condicionales
-
-Las __estructuras condicionales__ nos permiten definir flujos de ejecución del código, indicando qué se debe correr en cada circunstancia.
-
-```{r}
-A <- 'Esto no es una cadena de caracteres'
-B <- factor('Esto no es una cadena de caracteres')
-
-# Condicional simple
-if (class(A) == "character") {
-  print("No le crean, esto es una cadena de caracteres")
-} 
-
-# Condicional simple
-if (class(B) == "character") {
-  print("No le crean, esto es una cadena de caracteres")
-} 
-
-# Condicional exhaustivo
-if (class(B) == "character") {
-  print("No le crean, esto es una cadena de caracteres")
-} else {print("Esta chequeado, esto NO es una cadena de caracteres")}
-```
-
-Una forma más sencilla y explícita es usar el comando ifelse. 
-
-```{r}
-ifelse(test = class(A) == "character", yes =  "Esto es un caracter",
-       no = "Esto no era un caracter")
-
-```
-
-
-## Funciones
-
-Las __funciones__ nos permiten automatizar todas aquellas partes del código que se repiten mucho. Una vez diseñadas, funcionan igual que cualquier comando. La facilidad para crear las funciones es en buena medida la explicación de que haya tantas contribuciones de usuarios a la expansión del lenguaje.
-
-```{r}
-funcion_prueba <- function(a,b) {
-  print(paste(a, b, sep = " "))
-  
-}
-
-funcion_prueba(a = "Soy la primera parte de un string.", b = "Y yo la segunda parte")
-
-```
-
-También podemos asignar un valor por default.
-
-```{r}
-funcion_prueba <- function(a = "Soy un default.",b) {
-  print(paste(a, b, sep = " "))
-  
-}
-funcion_prueba(b = " A mi me tenes que asignar")
-
-funcion_prueba(a='Lo puedo asignar?', b='Obvio')
-
-```
-
-
-Las funciones que creamos nosotros viven dentro del script donde se las define. Es decir, es necesario volver a correr la definición cada vez que la queremos utilizar. 
-
-Vale mencionar que __lo que ocurre en una función, queda en la función__ excepto que explícitamente pidamos que devuelva el resultado, con el comando ```print()``` o ```return()```
-
-**AYUDA**: En R-Studio se puede acceder a las definición de una función clickeando la función mientras apretamos CTRL
-
-**Ejercicio 1**
-
-Realicen una función que:
-
-* Toma como argumento una matriz compuesta por números
-* Debe imprimir las dimensiones de la matriz
-* Debe indicar si el primer elemento de la matriz es un número par
-* Para la matriz m1 debe imprimir que las dimensiones son 2,2 y que el primer elemento no es par
-* Para la matriz m2 debe imprimir que las dimensiones son 3,2 y que el primer elemento es par
-
-```{r}
-m1 <- matrix(c(9,2,4,8), nrow = 2, ncol = 2)
-m2 <- matrix(c(10,1,5,7,9,17), nrow = 3, ncol = 2)
-```
-
-
-**Funciones anónimas**
-
-Son funciones a las cuales no les asignamos un nombre. Esto suele ser útil para hacer funciones pequeñas dentro de otras funciones o estructuras más complejas.
-
-```{r}
-(function(x) x*2)(10)
-```
-
-## Funciones apply
-
-Los loops que vimos anteriormente ( __for__ loops) suelen lentos y costosos computacionalmente para grandes conjuntos de datos. 
-
-La función apply y sus variantes brindan una alternativa más eficiente para aplicar funciones sobre un conjunto de datos. 
-
-La función **apply** se describe de la siguiente manera: apply(X, MARGIN, FUN, ...). Sus parámetros son:
-
-- **X**: estructura de datos
-- **MARGIN**: parámetro que indica como se aplica la función. Con MARGIN=1 se aplica sobre filas y con MARGIN=2 se aplica sobre columnas 
-- **FUN**: función a aplicar
-
-```{r, error = TRUE}
-# Armamos un dataframe con la recaudación en millones de dolares de la trilogía de Batman de Nolan
-USA  <- c(207,   535,   448)
-Mundo <- c(167,   470,   636)
-pelis  <-  c("Batman Begins", "Dark Knight", "Dark Knight Rises")
-
-batman <- data.frame(USA, Mundo, row.names = pelis)
-batman
-
-# ¿Cuanto recaudó cada película?
-apply(X=batman, MARGIN =1 , FUN=sum)
-# ¿Cuanto recaudó en promedio la trilogía por área?
-apply(X=batman, MARGIN =2 , FUN=mean)
-# ¿Cuanto recaudó cada película en pesos argentinos?
-apply(X=batman, MARGIN =1 , FUN=sum*30.4)
-# Funciones anónimas al rescate
-apply(X=batman, MARGIN =1 , FUN=function(x) sum(x)*30.4)
-```
-
-**Ejercicio 2**
-
-1) Crear un dataframe con el dataset de R: state.x77
-2) Responder:
-a) ¿Cuál es la población total de Estados Unidos?
-b) ¿Cuál es la media de la expectativa de vida?
-c) ¿Cual es la mediana del ingreso en pesos argentinos?
-3) Seleccionar las variables illiteracy y Murder. Crear un indice sumando ambos porcentajes y encontrar cual es el mejor y cual es el peor Estado según este índice 
 
 
 # Lectura y escritura de archivos
