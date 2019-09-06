@@ -8,6 +8,14 @@ output:
     toc_float: yes
 ---
 
+<style type="text/css">
+div.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
 >Reiniciar R
 
 ```{r message=FALSE, warning=FALSE}
@@ -16,7 +24,6 @@ library(openxlsx)
 library(ggthemes)
 library(fs)
 ```
-
 
 # Loops
 
@@ -120,6 +127,13 @@ Vale mencionar que __lo que ocurre en una función, queda en la función__ excep
 
 Las funciones siempre devuelven el último objeto que se crea en ellas, o si explicitamente se utiliza el comando `return()`
 
+**Funciones anónimas**
+
+Son funciones a las cuales no les asignamos un nombre. Esto suele ser útil para hacer funciones pequeñas dentro de otras funciones o estructuras más complejas.
+
+```{r}
+(function(x) x*2)(10)
+```
 
 
 # PURRR^[basado en https://jennybc.github.io/purrr-tutorial/ls03_map-function-syntax.html]
@@ -146,18 +160,16 @@ Si tenemos más de dos...
 Por ejemplo. Si queremos utilizar la función prueba sobre los datos del dataframe ABC_123
 
 
-
-
 ```{r}
 ABC_123 <- data.frame(Letras = LETTERS[1:20],Num = 1:20)
 funcion_prueba
 ```
 
-Si el resultado que queremos es que junte cada fila, necesitamos pasarle dos parámetros: utilizamos `map2()`
+Si el resultado que queremos es que junte cada fila, necesitamos pasarle dos parámetros: utilizamos `map2()`, Noten que la función se le pasa a `map()` sin paréntesis ni argumentos.
 
 
 ```{r}
-resultado <- map2(ABC_123$Letras,ABC_123$Num,funcion_prueba)
+resultado <- map2(.x = ABC_123$Letras, .y = ABC_123$Num,.f = funcion_prueba)
 resultado[1:3]
 
 ```
@@ -166,94 +178,95 @@ La salida de los `map()` es una __lista__, no un vector, por lo que si lo metemo
 
 ```{r}
 ABC_123 %>% 
-  mutate(resultado= map2(Letras,Num,funcion_prueba))
+  mutate(resultado= map2(.x = Letras,.y = Num,.f = funcion_prueba))
 
 ```
 
-al ponerlo dentro del dataframe desarma la lista y guarda cada elemento por separado.
+Al ponerlo dentro del dataframe desarma la lista y guarda cada elemento por separado.
 La magia de eso es que podemos __guardar cualquier cosa en el dataframe__ no sólo valores, sino también listas, funciones, dataframes, etc.
 
 Si queremos recuperar los valores originales en este caso podemos usar `unlist()`
 
-
 ```{r}
-
+# Recuperamos los tres primeros elementos de la lista resultados
 resultado[1:3] %>% unlist()
 
+# Recuperamos el elemento de la lista para cada par letra-numero (cada fila)
 ABC_123 %>% 
-  mutate(resultado= unlist(map2(Letras,Num,funcion_prueba)))
-
+  mutate(resultado= unlist(map2(.x = Letras,.y = Num,.f = funcion_prueba)))
 ```
-
 
 Si lo que queríamos era que la función nos haga todas las combinaciones de letras y número, entonces lo que necesitamos es pasarle el segúndo parametro como algo _fijo_, poniendolo después de la función. 
 
+Notemos que estamos utilizando `map()` que toma un único input, en lugar de `map2()`
+
 ```{r}
-map(ABC_123$Letras,funcion_prueba,ABC_123$Num)[1:2]
+#Combinacion de todas las letras con todos los numeros
+map(.x = ABC_123$Letras,.f = funcion_prueba,ABC_123$Num)[1:2]
 ```
 
 En este caso, el map itera sobre cada elemento de `letras`, y para cada elemento _i_ hace 
 `funcion_prueba(i,ABC$Num)` y guarda el resultado en la lista
 
-si lo queremos meter en el dataframe
+Si lo queremos meter en el dataframe:
 
 ```{r}
+# Asignar resultado al dataframe
 ABC_123 %>% 
   mutate(resultado= map(Letras,funcion_prueba,Num))
 ```
 
-Ahora cada fila tiene un vector de 20 elementos guardado en la columna resultado
+Ahora cada fila tiene una lista de 20 elementos guardado en la columna **resultado**
 
+##  Funciones implícitas/anonimas
 
-
-##  Funciones implícitas 
-
-no es necesario que definamos la función de antemano. Podemos usar _funciones implícitas_
+No es necesario que definamos la función de antemano. Podemos usar _funciones implícitas_
 
 ```{r}
-
-map_dbl(c(1:10), function(x) x^2)
-map2_dbl(c(1:10),c(11:20), function(x,y) x*y)
-
+# Calculamos el cuadrado de cada elemento
+map_dbl(.x = c(1:10), .f = function(x) x^2) 
+# Calculamos el producto para los elementos x e y
+map2_dbl(.x = c(1:10),.y = c(11:20),.f =  function(x,y) x*y)
 ```
 
 ## Funciones lambda
 
-incluso más conciso que las funciones implíictas son las __funciones lambda__ donde definimos las variables como _.x_ _.y_, etc. La flexibilidad de estas expresiones es limitada, pero puede ser útil en algunos casos. 
+Incluso más conciso que las funciones implíictas son las __funciones lambda__ donde definimos las variables como _.x_ _.y_, etc. La flexibilidad de estas expresiones es limitada, pero puede ser útil en algunos casos. 
 
 ```{r}
-
-map_dbl(c(1:10),~.x^2)
-map2_dbl(c(1:10),c(11:20),~.x*.y)
-
+# Calculamos el cuadrado de cada elemento
+map_dbl(.x = c(1:10),.f = ~.x^2)
+# Calculamos el producto para los elementos x e y
+map2_dbl(.x = c(1:10),.y = c(11:20),.f = ~.x*.y)
 ```
-
-
 
 
 ## Ejemplo: Iterando en la EPH
 
 Lo primero que necesitamos es definir un vector o lista sobre el que iterar. 
 
-Por ejemplo, podemos armar un vector con los path a las bases individuales, con el comando `fs::dir_ls`
+Por ejemplo, podemos armar un vector con los path a las bases individuales, con el comando `fs::dir_ls`. Se le especifica el __path__ donde buscar los archivos y en este caso una expresion regular __regexp__ para que devuelva aquellos archivos que coinciden con la misma.
 
 ```{r}
-
+# Buscamos en el path aquellos aquellos archivos que matchean a la expresion regular
 bases_individuales_path <- dir_ls(path = '../Fuentes/', regexp= 'individual')
 bases_individuales_path
 ```
 
-Luego, como en la función que usamos para leer las bases definimos muchos parametros, nos podemos armar una función _wrapper_ que sólo necesite un parámetro, y que simplifique la escritura del map
+Luego, como en la función que usamos para leer las bases definimos muchos parametros, nos podemos armar una función _wrapper_ que sólo necesite un parámetro, y que simplifique la escritura del map.
 
 ```{r message=FALSE, warning=FALSE}
-
+# Leer la base de EPH tomando como argumento el file_path
 leer_base_eph <- function(path) {
-  read.table(path,sep=";", dec=",", header = TRUE, fill = TRUE) %>% 
+  # Lectura de archivo
+  read.table(path,sep=";", dec=",", header = TRUE, fill = TRUE) %>%
+    # Seleccion de variables relevantes
     select(ANO4,TRIMESTRE,REGION,P21,CH04, CH06)
 }
 
+# Leer a un dataframe las tablas especificadas en el vector de bases individuales
 bases_df <- tibble(bases_individuales_path) %>%
-  mutate(base = map(bases_individuales_path, leer_base_eph))
+  mutate(base = map(.x = bases_individuales_path, .f = leer_base_eph))
 
 ```
 
@@ -261,26 +274,27 @@ bases_df <- tibble(bases_individuales_path) %>%
 bases_df
 ```
 
-El resultado es un DF donde la columna __base__ tiene en cada fila, otro DF con la base de la EPH de ese período. Esto es lo que llamamos un _nested DF_ o dataframe nesteado pa les pibes.
+El resultado es un dataframe donde la columna __base__ tiene en cada fila otro dataframe  con la base de la EPH de ese período. Esto es lo que llamamos un _nested DF_ o dataframe anidado.
 
-Si queremos juntar todo, podemos usar `unnest()`
+Si queremos abrir ("desanidar") estas dataframes anidados usamos el comando `unnest()`
 
 ```{r message=FALSE, warning=FALSE}
+# Desanidamos el dataframe
 bases_df <- bases_df %>% unnest()
 bases_df
 ```
 
 > ¿Qué pasa si los DF que tenemos nesteados no tienen la misma cantidad de columnas?
 
-
-Esto mismo lo podemos usar para fragmentar el datastet por alguna variable, con el `group_by()`
+Esto mismo lo podemos usar para fragmentar el dataset por alguna variable, con la funcion `group_by()`
 
 
 ```{r}
 bases_df %>% 
+  # Agrupar por region
   group_by(REGION) %>% 
+  # Anidar
   nest()
-
 ```
 
 Así, para cada región tenemos un DF.
@@ -291,31 +305,32 @@ No todo en la vida es un Dataframe. Hay estucturas de datos que no se pueden nor
 
 ## Ejemplo. Regresión lineal
 
-Si bien no nos vamos a meter en el detalle del modelo lineal hoy, es útil usarlo como ejemplo de lo que podemos hacer con MAP.
+Si bien no nos vamos a meter en el detalle del modelo lineal en este encuentro, es útil usarlo como ejemplo de lo que podemos hacer con MAP.
 
 Planteamos el modelo 
 $$
 P21 = \beta_0 + \beta_1*CH04 + \beta_2*CH06
 $$
-Osea, un modleo que explica el ingreso según sexo y edad
 
+Es un modelo que explica el ingreso (P21) en funcion del sexo (CH04) y edad (CH06)
 
 ```{r}
-
+# Calculamos una regresion lineal sobre el dataset que tiene todas las observaciones de EPH
 lmfit <- lm(P21~factor(CH04)+CH06,data = bases_df)
 
+# Resumen del modelo
 summary(lmfit)
 ```
-(al final de la clase podemos charlar sobre los resultados, si hay interés :-) )
 
-De forma Tidy, la librería `broom` nos da los resultados en un DF.
+(al final de la clase podemos charlar sobre los resultados)
+
+De forma Tidy, la librería `broom` nos da los resultados sobre los coeficientes en un DF.
 
 ```{r}
 broom::tidy(lmfit)
 ```
  
  Si lo queremos hacer por region
- 
  
 ### Loopeando
 
@@ -324,14 +339,16 @@ broom::tidy(lmfit)
 resultados <- tibble()
 
 for (region in unique(bases_df$REGION)) {
-  
+  # Creamos un dataset por region
   data <- bases_df %>% 
     filter(REGION==region)
-  
+  # Calcular el modelo lineal
   lmfit <- lm(P21~factor(CH04)+CH06,data = data)
-  
+  # Guardar los resultados de los coeficientes 
   lmtidy <- broom::tidy(lmfit)
+  # Asignamos la variable region
   lmtidy$region <- region
+  # Unimos los dataframes
   resultados <- bind_rows(resultados,lmtidy)
 
 }
@@ -341,24 +358,29 @@ resultados
 
 ## Usando MAP
 
-Primero me armo una funcion que me simplifica el codigo
+Primero me armo una funcion que me simplifica el codigo. La funcion nos devuelve la informacion de los coeficientes del modelo lineal calculado sobre el dataframe __porcion__
+
 ```{r}
 fun<-function(porcion,grupo) {  broom::tidy(lm(P21~factor(CH04)+CH06,data = porcion))}
 ```
 
 ```{r}
 bases_df_lm <- bases_df %>% 
+  # Agrupamos por region
   group_by(REGION) %>%
+  # Anidamos
   nest() %>% 
+  # Creamos una columna que tenga el dataframe como resultado de la funcion
   mutate(lm = map(data,fun))
+
 bases_df_lm
+
+# Desanidamos por la variable lm
 bases_df_lm %>% 
   unnest(lm)
 ```
 
 O incluso más facil, utilizando `group_modify` (que es un atajo que solo acepta DF)
-
-
 
 ```{r}
 bases_df %>% 
@@ -366,17 +388,20 @@ bases_df %>%
   group_modify(fun)
 ```
 
-
 Pero MAP sirve para operar con cualquier objeto de R.
 
 Por ejemplo podemos guardar el __objeto__ `S3:lm` que es la regresion lineal entrenada. Ese objeto no es ni un vector, ni una lista, ni un DF. No es una estructura de datos, sino que es algo distinto, con _propiedades_ como `predict()` para predecir, el `summary()` que vimos, etc.
 
 ```{r}
+# La funcion calcula el modelo lineal sobre cada porcion de datos
 fun<-function(porcion,grupo) {  lm(P21~factor(CH04)+CH06,data = porcion)}
 
-bases_df %>% 
+bases_df %>%
+  # Agrupar por region
   group_by(REGION) %>%
-  nest() %>%  
+  # Anidar
+  nest() %>%
+  # Calcular el modelo lineal
   mutate(lm = map(data,fun))
 ```
 
@@ -386,30 +411,41 @@ bases_df %>%
 Las funciones `Walk` Tienen la misma forma que los `map`, pero se usan cuando lo que queremos iterar no genera una salida, sino que nos interesan los efectos secundarios que generan.
 
 ```{r}
-map2(ABC_123$Letras,ABC_123$Num,funcion_prueba)[1:3]
-walk2(ABC_123$Letras,ABC_123$Num,funcion_prueba)
-
+map2(.x = ABC_123$Letras,.y = ABC_123$Num,.f = funcion_prueba)[1:3]
 ```
 
 ```{r}
+walk2(.x = ABC_123$Letras,.y = ABC_123$Num,.f = funcion_prueba)
+```
 
+Notemos que `walk2` no devolvió un resultado
+
+```{r}
+# funcion para imprimir
 imprimir_salida <- function(x,y){
   print(funcion_prueba(x,y))
 }
 
+# Map
+map2(ABC_123$Letras,ABC_123$Num,imprimir_salida)
+```
+
+```{r}
+# Walk
 walk2(ABC_123$Letras,ABC_123$Num,imprimir_salida)
+
 ```
 
 Eso que vemos es el efecto secundario dentro de la función (imprimir)
 
 ## Discusión.
 
-> Cuando usar estas herramientas?
+> ¿Cuándo usar estas herramientas?
 
-A lo largo del curso vimos diferentes técnicas para manipulación de datos. En particular, la librería dplyr nos permitía fácilmente modificar y crear nuevas variables, agrupando. Cuando usamos `dplyr` y cuando usamos `purrr`.
+A lo largo del curso vimos diferentes técnicas para manipulación de datos. En particular, la librería dplyr nos permitía fácilmente modificar y crear nuevas variables, agrupando. ¿Cuando usamos `dplyr` y cuando usamos `purrr`?
 
 - Si trabajamos sobre un DF simple, sin variables anidadas (lo que conocíamos hasta hoy) podemos usar `dplyr`
-- Si queremos trabajar con DF anidados, con cosas que no son DF, o si el resultado de la operación que vamos a realizar a nivel file es algo distinto a un valor único, nos conviene usar `map` y `purrr`
+- Si queremos trabajar con DF anidados, con cosas que no son DF, o si el resultado de la operación que vamos a realizar a nivel archivo es algo distinto a un valor único, nos conviene usar `map` y `purrr`
 
 - Las funciones `walk` son útiles por ejemplo para escribir archivos en disco de forma iterativa. Algo que no genera una salida
 
