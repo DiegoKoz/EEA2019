@@ -8,6 +8,7 @@
 - [Ejercicios intro.](clase 1/Ejercicios - Clase 1.R)
 - [Programación funcional.](clase 1/Clase_1-Programacion funcional.nb)
 - [Ejercicios programación funcional.](clase 1/Ejercicios Clase 1_Programacion funcional.R)
+- [Programación funcional extra](clase 1/programacion_funcional_extra)
 
 ### Clase 2:
 
