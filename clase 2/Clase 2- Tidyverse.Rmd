@@ -1,7 +1,7 @@
 ---
 title: "Clase 2. Tidyverse"
 author: "Diego Kozlowski y Juan Barriola"
-date: "25 de Agosto de 2018"
+date: "14 de Septiembre de 2019"
 output: 
   html_notebook: 
     toc: true
@@ -19,13 +19,14 @@ A continuación cargamos la librería a nuestro ambiente. Para ello debe estar p
 ```{r,eval=FALSE}
 library(tidyverse)
 ```
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(lubridate)
 ```
-Para mostrar el funcionamiento básico de tydyverse retomaremos el ejemplo de la clase 1, con lo cual volvemos a crear el set de datos del [Indice de salarios](http://www.indec.gob.ar/bajarCuadroEstadistico.asp?idc=4020B33440609462654542BD0BC320F1523DA0DC52C396201DB4DD5861FFEDC9AD1436681AC84179).
+
+Para mostrar el funcionamiento básico del tidyverse retomaremos el ejemplo de la clase 1, con lo cual volvemos a crear el set de datos del [Indice de salarios](http://www.indec.gob.ar/bajarCuadroEstadistico.asp?idc=4020B33440609462654542BD0BC320F1523DA0DC52C396201DB4DD5861FFEDC9AD1436681AC84179).
 
 ```{r, warning=FALSE}
 
@@ -90,6 +91,7 @@ Datos %>%
 ### rename
 Permite renombrar una columna de la tabla. Funciona de la siguiente manera: 
  ```Data %>% rename( nuevo_nombre = viejo_nombre )``` 
+ 
 ```{r}
 Datos %>% 
   rename(Periodo = FECHA)
@@ -140,6 +142,7 @@ Datos
 
 ### summarise
 Crea una nueva tabla que resuma la información original. Para ello, definimos las variables de resumen y las formas de agregación.
+
 ```{r}
 Datos %>% 
   summarise(Indprom = mean(INDICE))
@@ -148,6 +151,8 @@ Datos %>%
 
 ### group_by
 Esta función permite realizar operaciones de forma agrupada. Lo que hace la función es "separar" a la tabla según los valores de la variable indicada y realizar las operaciones que se especificaba  continuación, de manera independiente para cada una de las "subtablas". En nuestro ejemplo, sería útil para calcular el promedio de los indices por _Fecha_ 
+
+
 ```{r}
 Datos %>% 
   group_by(FECHA) %>%
@@ -389,7 +394,7 @@ La librería GGplot tiene a su vez muchas otras librerías que extienden sus pot
 - [gganimate](https://gganimate.com/): Para hacer gráficos animados.
 - [ggridge](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html): Para hacer gráficos de densidad faceteados
 - [ggally](https://ggobi.github.io/ggally/): Para hacer varios gráficos juntos.
-^
+
 
 ```{r message=FALSE, warning=FALSE}
 library(GGally)
@@ -403,18 +408,6 @@ library(ggridges)
 ggplot(iris, aes(x = Sepal.Length, y = Species, fill=Species)) + 
   geom_density_ridges()
 ```
-
-
-También hay extensiones que te ayudan a escribir el código, como [esquisse](https://dreamrs.github.io/esquisse/)
-
-```{r eval=FALSE}
-
-iris <- iris
-#Correr en la consola
-esquisse::esquisser()
-```
-
-
 
 
 Lo útil de hacer gráficos en R, en lugar de por ejemplo excel, es que podemos hacer uso de más dimensiones, por ejemplo:
@@ -714,7 +707,7 @@ El Objetivo de estos ejercicios es practicar el uso del $tidyverse$ para la mani
 
 Una __ayuda__ es utilizar el [diseño de registro](../Fuentes/EPH_registro_2_trim_2016.pdf) para codificar las variables
 
-
+  
 __ejercicios__
 
 - Graficar la distribución del ingreso por ocupación principal (p21) según categoría ocupacional (CAT_OCUP). (opcional: utilizar la librería [ggridges](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html))
