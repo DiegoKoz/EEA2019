@@ -302,51 +302,9 @@ fecha + days(2)
 fecha - (weeks(1) + hours(2))
 ```
 
+# [Ggplot2](http://ggplot2.tidyverse.org/reference/)
 
-# Gráficos
-
-### Gráficos Básicos en R
-
-Rbase  tiene algunos comandos genéricos para realizar gráficos, que se adaptan al tipo de información que se le pide graficar, por ejemplo:
-
-- plot()
-- hist()
-
-
-
-```{r}
-iris
-
-plot(iris)
-plot(iris$Sepal.Length,type = "p")
-plot(iris$Sepal.Length,type = "l")
-plot(iris$Sepal.Length,type = "b")
-hist(iris$Sepal.Length, col = "lightsalmon1", main = "Histograma")
-
-```
-
-
-Para guardar los gráficos
-
-```{r}
-png("Grafico1.png")
-plot(iris$Sepal.Length,type = "b")
-dev.off()
-
-```
-
-
-La función ```png()``` _abre el dispositivo de imagen_, luego podemos hacer los gráficos, y a continuación, con ```dev.off()``` se _cierra el dispositivo_ y se graban los gráficos. 
-
-Los gráficos del R base son útiles para escribir de forma rápida y obtener alguna información mientras trabajamos. Muchos paquetes estadísticos permiten mostrar los resultados de forma gráfica con el comando plot (por ejemplo, las regresiones lineales ```lm()```).       
- 
-Sin embargo, existen librerías mucho mejores para crear gráficos de nivel de publicación. La más importante es __ggplot2__, que a su vez tiene extensiones mediante otras librerías.
-
-
-#[Ggplot2](http://ggplot2.tidyverse.org/reference/)
-
-
-ggplot tiene su sintaxis propia. La idea central es pensar los gráficos como una sucesión de capas, que se construyen una a la vez.    
+`ggplot` tiene su sintaxis propia. La idea central es pensar los gráficos como una sucesión de capas, que se construyen una a la vez.    
 
 - El operador __```+```__ nos permite incorporar nuevas capas al gráfico.
 
@@ -362,13 +320,11 @@ ggplot tiene su sintaxis propia. La idea central es pensar los gráficos como un
 ggplot tiene __muchos__ comandos, y no tiene sentido saberlos de memoria, es siempre útil reutilizar gráficos viejos y tener a mano el [machete](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf).
 
 
-
 ```{r}
 library(ggplot2)
 library(ggthemes)  # estilos de gráficos
 library(ggrepel)   # etiquetas de texto más prolijas que las de ggplot
 library(scales)    # tiene la función 'percent()'
-
 
 ggplot(data = iris, aes(x = Petal.Length, Petal.Width, color = Species))+
   geom_point(alpha=0.75)+
@@ -376,6 +332,7 @@ ggplot(data = iris, aes(x = Petal.Length, Petal.Width, color = Species))+
   theme(legend.position = 'none')+
   facet_wrap(~Species)
 ```
+
 ## Capas del Gráfico
 Veamos ahora, el "paso a paso" del armado del mismo.          
 
@@ -459,7 +416,6 @@ Hacemos un procesamiento simple: Sacamos los ingresos iguales a cero y las no re
 Las variables sexo( CH04 ) y Nivel educativo están codificadas como números, y el R las entiende como numéricas.
 
 
-
 Es importante que las variables sean del tipo que conceptualmente les corresponde (el nivel educativo es una variable categórica, no continua), para que el ggplot pueda graficarlo correctamente. 
 
 ```{r}
@@ -505,7 +461,7 @@ ggplot(ggdata, aes(x= CH04, y = P21, group = CH04, fill = CH04 )) +
 ```
 
 
-### Kernels
+### Kernels (OPCIONAL)
 
 Podemos hacer una nueva versión del gráfico 2. Utilizando un procesamiento similar al que hicimos antes.
 
@@ -518,7 +474,7 @@ datagraf <-Individual_t117 %>%
                                         REGION == 40   ~ 'NOA',
                                         REGION == 41   ~ 'NEA',
                                         REGION == 42   ~ 'Cuyo',
-                                        REGION == 43   ~ 'Peampeana',
+                                        REGION == 43   ~ 'Pampeana',
                                         REGION == 44   ~ 'Patagonia',
                                         FALSE          ~ 'otro'),
          ingreso_laboral    = as.numeric(TOT_P12 + P21),
@@ -585,7 +541,7 @@ ggsave(filename = paste0("../Resultados/", "Kernel_1.png"),scale = 2)
 El eje y no tiene demasiada interpretabilidad en los Kernel, porque hace a la forma en que se construyen las distribuciones. 
 
 
-### Tendencia
+### Tendencia (OPCIONAL)
 
 Para realizar estos gráficos, vamos a modificar un poco los datos:
 
@@ -718,7 +674,7 @@ Recomendamos que intenten ir resolviendo los problemas que surjan consultandonos
 11. Graficamos la evoluciòn del dólar y del nivel general del IPC (tener en cuenta el rango de las variables)
 12. Graficamos la evoluciòn del dólar y de los grupos del IPC
 
-## EPH
+## EPH (OPCIONAL)
 
 El Objetivo de estos ejercicios es practicar el uso del $tidyverse$ para la manipulación de los datos, y $ggplot$ para graficar la información. En las consignas, se propone de manera general qué variables se quiere observar. Ustedes deberán levantar y procesar los datos de la Encuesta Permanente de Hogares, y gráficarlos como consideren que mejor se aprecia la relación entre las variables.     
 
