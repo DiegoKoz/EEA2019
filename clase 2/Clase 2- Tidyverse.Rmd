@@ -9,6 +9,13 @@ output:
     depth: 2
 ---
 
+<style type="text/css">
+div.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 
 # [Tidyverse](https://www.tidyverse.org/)         
 
@@ -81,7 +88,7 @@ Datos %>%
   filter(INDICE>101 , GRUPO == "Privado_Registrado")
 ```
 
-Nótese que en este caso al separar con una  __,__ las condiciones se exige el cumplimiento de ambas. En caso de desear que se cumpla una sola condición debe utilizarse el caracter __|__
+Nótese que en este caso al separar con una (coma)  `,` las condiciones se exige el cumplimiento de ambas. En caso de desear que se cumpla una sola condición debe utilizarse el caracter `|`
 
 ```{r}
 Datos %>% 
@@ -102,6 +109,7 @@ Nótese que a diferencia del ejemplo de la función __filter__ donde utilizábam
 Permite agregar una variable a la tabla (especificando el nombre que tomará esta), que puede ser el resultado de operaciones sobre otras variables de la misma tabla.       
 
 En caso de especificar el nombre de una columna existente, el resultado de la operación realizada "sobrescribirá" la información de la columna con dicho nombre
+
 ```{r}
 Datos <- Datos %>% 
   mutate(Doble=INDICE*2)
@@ -109,15 +117,26 @@ Datos
 ```
 
 ### case_when
-Permite definir una variable, la cual toma un valor particular para cada condición establecida. En caso de no cumplir ninguna de las condiciones establecidas la variable tomara valor __NA__
+Permite definir una variable, la cual toma un valor particular para cada condición establecida. Los valores asignados deben ser siempre del mismo tipo (numerico, caracter, logico,etc).
+
+En caso de no cumplir ninguna de las condiciones establecidas la variable tomara valor __NA__
+
 La sintaxis de la función es case_when( _condicion lógica1_ __~__ _valor asignado1_).
 
 ```{r}
 Datos <- Datos %>% 
   mutate(Caso_cuando = case_when(GRUPO == "Privado_Registrado"   ~ INDICE*2,
-                                 GRUPO == "Público"              ~ INDICE*3,
-                                 GRUPO == "Privado_No_Registrado"~ INDICE*5))
+                                 GRUPO == "Público"              ~ INDICE*3))
 Datos
+```
+
+Una forma de manejar la asignación de valores faltantes es crear una "condición" que sea igual a TRUE. Esto funciona como la parte de **else** de una estructura condicional
+
+```{r}
+Datos %>% 
+  mutate(Caso_cuando = case_when(GRUPO == "Privado_Registrado"   ~ INDICE*2,
+                                 GRUPO == "Público"              ~ INDICE*3,
+                                 TRUE ~ 1000))
 ```
 
 ### select
@@ -150,7 +169,7 @@ Datos %>%
 ```
 
 ### group_by
-Esta función permite realizar operaciones de forma agrupada. Lo que hace la función es "separar" a la tabla según los valores de la variable indicada y realizar las operaciones que se especificaba  continuación, de manera independiente para cada una de las "subtablas". En nuestro ejemplo, sería útil para calcular el promedio de los indices por _Fecha_ 
+Esta función permite realizar operaciones de forma agrupada. Lo que hace la función es "separar" a la tabla según los valores de la variable indicada y realizar las operaciones que se especifican a continuación, de manera independiente para cada una de las "subtablas". En nuestro ejemplo, sería útil para calcular el promedio de los indices por _Fecha_ 
 
 
 ```{r}
@@ -208,7 +227,6 @@ iris <- iris %>%
 
 iris
 ```
-
 
   
 ### Gather y Spread
@@ -568,7 +586,6 @@ El eje y no tiene demasiada interpretabilidad en los Kernel, porque hace a la fo
 
 
 ### Tendencia
-
 
 Para realizar estos gráficos, vamos a modificar un poco los datos:
 
