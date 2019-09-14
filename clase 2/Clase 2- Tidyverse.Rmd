@@ -1,5 +1,5 @@
 ---
-title: "Clase 2. Tidyverse"
+title: "Clase 2. Tidyverse y git!"
 author: "Diego Kozlowski y Juan Barriola"
 date: "14 de Septiembre de 2019"
 output: 
