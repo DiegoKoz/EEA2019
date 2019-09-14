@@ -6,7 +6,10 @@
 ### [Ejemplo overfitting](Overfitting Avoiding With NN ultimo 2019R.R)
 
 
-### [Regresión lineal](http://mate.dm.uba.ar/~meszre/apunte_regresion_lineal_szretter.pdf)
+## Regresión lineal
+
+### [Notas de clase](http://mate.dm.uba.ar/~meszre/apunte_regresion_lineal_szretter.pdf)
+### [Ejercicios-consignas](Ejercicios Modelo Lineal.pdf)
 
 
 ## Bibliografía de consulta
@@ -21,3 +24,8 @@
 ### Papers
 
 1. [Wickham, H. (2014). Tidy Data. *Journal of Statistical Software*, 59(10)](https://vita.had.co.nz/papers/tidy-data.pdf)
+
+
+### Otros materiales de consulta
+
+[https://happygitwithr.com/](https://happygitwithr.com/)
