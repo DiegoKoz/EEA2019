@@ -45,9 +45,11 @@ Ahora ya pueden comenzar a trabajar dentro del proyecto.
 
 * No guardar el entorno de trabajo, es decir, no guardar el workspace al cerrar el proyecto.
 
-## 1. Crear un R Notebook
+## 2. Crear un R Notebook
 
-Los notebooks de R ...
+Los notebooks de R son una gran herramienta para realizar analisis y proyectos ya que permiten combinar código, texto e imágenes. Además permiten darle distintos formatos al texto para crear documentos prolijos.
+
+En este caso vamos a trabajar con los R Notebooks básicos que se compilan a html, lo cual permite
 
 Para crear un R Notebook
 
@@ -77,6 +79,15 @@ Se pueden usar los atajos:
 
 ![](rnotebook_paso_5.png){ height=75%, width=75%}
 
-6. Si el archivo no está guardado, deberán guardarlo 
+6. Si el archivo no está guardado, deberán guardarlo indicando el nombre del archivo. En este paso se crearán dos archivos:
+
+* El archivo con extensión .Rmd es el **RMarkdown** en el cual se trabaja
+* El archivo con extesión .nb.html es el documento compilado en html
 
 ![](rnotebook_paso_6.png){ width=75%}
+
+## 3. Usar RPubs
+
+1. Ingresar en la pagina de [Rpubs](http://rpubs.com/) y registrarse si no tienen usuario. Recuerden la contraseña porque hay que enviar un mail para resetearla si se la olvidan.
+
+2. 
