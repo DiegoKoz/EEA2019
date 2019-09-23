@@ -11,6 +11,7 @@ library(tidyverse)
 library(openintro)
 #install.packages("GGally")
 library(GGally)
+library(corrr)
 library(knitr)
 library(kableExtra)
 options(knitr.table.format = "html") 
@@ -50,7 +51,27 @@ ggpairs(.,
         title = "Matriz de correlaciones",
         mapping = aes(colour= am))
 ```
+### Librería [corrr](https://github.com/tidymodels/corrr) 
 
+Esta librería pertenece al entorno de _tidymodels_ 
+
+```{r}
+mtcars %>% 
+ correlate() %>% 
+  shave() %>% 
+  fashion()
+```
+```{r}
+mtcars %>% 
+ correlate() %>% 
+  network_plot()
+```
+
+```{r}
+mtcars %>% 
+ correlate() %>% 
+  rplot()
+```
 
 Veamos la correlación entre:
 
