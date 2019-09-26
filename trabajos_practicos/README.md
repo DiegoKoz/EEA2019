@@ -6,4 +6,4 @@
 
 ### Trabajo Practico 1:
 
-- [Consignas](TP-1_tp1_consignas.nb.html)
+- [Consignas](TP-1/tp1_consignas.nb.html)
