@@ -1,5 +1,7 @@
 #### [Materiales clases teóricas](teorica)
 
+## [Trabajos Prácticos](trabajos_practicos)
+
 # Materiales para las clases prácticas:
 
 ### Clase 1: 07-09
