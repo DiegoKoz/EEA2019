@@ -7,4 +7,4 @@
 ### Trabajo Practico 1:
 
 - [Consignas](TP-1/tp1_consignas.nb.html)
-- [Dataset-ar_propiedades.csv](TP-1/ar_propiedades.zip)
+- [Dataset](TP-1/ar_properties.zip)
