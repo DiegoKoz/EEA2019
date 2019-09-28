@@ -51,7 +51,7 @@ Deberian llegar a un dataset con 51210 observaciones y 8 variables
   
 4) Analisis exploratorios (II)
     a) Obtener estadisticas descriptivas para la variable precio (cuartiles, promedio, minimo y maximo) y realizar un histograma de la variable
-    b) Obtener estadisticas descriptivas para la variable precio (cuartiles, promedio, minimo y maximo) por cada tipo de superficie. 
+    b) Obtener estadisticas descriptivas para la variable precio (cuartiles, promedio, minimo y maximo) por cada tipo de propiedad. 
     c) Realizar un grafico de boxplot de la variable precio por tipo de propiedad
     d) Realizar un correlagrama usando `GGAlly`
   
