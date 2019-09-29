@@ -14,6 +14,7 @@
 ### Clase 2: 14-09
 
 - [Tidyverse y gráficos](clase 2/Clase 2- Tidyverse.nb.html)
+- [resueltos](clase 2/resueltos)
 
 ### Clase 3: 28-09
 
