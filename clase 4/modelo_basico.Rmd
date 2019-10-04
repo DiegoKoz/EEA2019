@@ -8,6 +8,14 @@ output:
     df_print: paged
 ---
 
+<style type="text/css">
+div.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
 # Modelo Básico- Clase 1
 
 
@@ -183,7 +191,11 @@ ggplot(sim1, aes(x, y)) +
 
 ## Superficie del ECM
 
-Al estar utilizando dos parametros, podemos graficar la superficie del error cuadractico medio (ECM) como funcion de ambos parametros.
+Podemos pasar del gráfico de la grilla de puntos a graficar los mismos datos en tres dimensiones. En el plano *xy* tendremos a ambos parámetros y en el eje *z* observamos el valor del del error cuadractico medio (ECM).
+
+Notemos que ya no estamos trabajando con la distancia sino que estamos graficando la superficie del ECM como función de ambos parametros.
+
+Por la fórmula del ECM esta superficie es convexa y presenta un mínimo global.
 
 ```{r, echo=FALSE}
 # Modelo lineal
