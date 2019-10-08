@@ -60,5 +60,8 @@
 - [Redes II: Convolutional Neural Networks](clase 11/mnist102.nb.html)
 
 
+## [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
+
+
 
 [Preguntas parcial](https://images.mentalfloss.com/sites/default/files/styles/mf_image_16x9/public/red-nose-clown-hed.jpg?itok=ZX1GxhNK&resize=1100x1100)
