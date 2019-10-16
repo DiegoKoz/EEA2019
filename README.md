@@ -2,6 +2,8 @@
 
 ## [Trabajos Prácticos](trabajos_practicos)
 
+### [Ejercicios modelo lineal](ejercicios_modelo_lineal)
+
 # Materiales para las clases prácticas:
 
 ### Clase 1: 07-09
