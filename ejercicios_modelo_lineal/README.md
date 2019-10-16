@@ -1,7 +1,5 @@
 
-# Práctica independiente 
-
-Para la práctica independiente sobre el modelo lineal les compartimos el material práctico del curso de [Enfoque Estadístico del Aprendizaje](https://diegokoz.github.io/EEA2019/):
+# Ejercicios de práctica de modelo lineal.
 
 - [Consignas](Ejercicios Modelo Lineal.pdf)
 - [parte 1](parte_1/ejercicios.nb.html)
