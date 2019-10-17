@@ -13,7 +13,7 @@ output:
 
 ```{r setup, message = FALSE}
 library(tidyverse)
-
+library(plotly)
 library(modelr)
 options(na.action = na.warn)
 ```
@@ -199,15 +199,84 @@ ggplot(sim1, aes(x, y)) +
   )
 ```
 
+## Superficie del ECM
+
+Podemos pasar del gráfico de la grilla de puntos a graficar los mismos datos en tres dimensiones. En el plano *xy* tendremos a ambos parámetros y en el eje *z* observamos el valor del del error cuadractico medio (ECM).
+
+Notemos que ya no estamos trabajando con la distancia sino que estamos graficando la superficie del ECM como función de ambos parametros.
+
+Por la fórmula del ECM esta superficie es convexa y presenta un mínimo global.
+
+```{r, echo=FALSE}
+# Modelo lineal
+model_predictions <- function(parameters, data, predictor){
+   pred <- parameters[1] + parameters[2] * data[[predictor]]
+   return(pred)
+}
+
+# Calcular el rss
+get_rss <- function(parameters, data, predictor = 'x', predicted = 'y'){
+  prediction <- model_predictions(parameters, data, predictor = predictor)
+  residuals <- data[[predicted]] - model_predictions(parameters, data, 'x')  
+  rss <- sum((residuals)^2)
+  return(rss)
+}
+
+#Calcular el rss para el dataset sim1
+sim1_get_rss <- function(a0, a1) {
+  get_rss(c(a0, a1), sim1)
+}
+
+# Vectores de parametros
+b0 = seq(2, 6, by = 0.1)
+b1 = seq(1.7, 2.5, length=length(b0))
+
+# Grilla de modelos
+models_grid <- expand.grid(
+  
+  b0 = seq(2, 6, by = 0.1),
+  b1 = seq(1.7, 2.5, length=length(b1))
+) %>% 
+  mutate(dist = purrr::map2_dbl(b0, b1, sim1_get_rss)) 
+
+
+```
+
+```{r}
+# Matriz para el grafico
+rss_matrix <- matrix(models_grid[["dist"]],nrow = length(b1),ncol = length(b1), byrow = TRUE)
+
+# Grafico usando plotly
+rss_graph = plot_ly(x=b0, y=b1, z=rss_matrix) %>% add_surface(contours = list(
+  z = list(
+    show=TRUE,
+    usecolormap=TRUE,
+    highlightcolor="#ff0000",
+    project=list(z=TRUE)
+  )
+), reversescale=TRUE)  %>%
+  layout(
+    title = "Superficie del ECM",
+    scene = list(
+      xaxis = list(title = "a0"),
+      yaxis = list(title = "a1"),
+      zaxis = list(title = "RSS")
+    ))
+
+rss_graph
+```
+
 
 # Modelo Básico- Clase 2
 
-## óptimo por métodos numéricos 
+## Óptimo por métodos numéricos 
 
-Podríamos imaginar iterativamente haciendo la cuadrícula más fina y fina hasta que nos centramos en el mejor modelo. Pero hay una forma mejor de abordar ese problema: una herramienta de minimización numérica llamada búsqueda __Newton-Raphson__.
+Podríamos ir haciendo la cuadrícula más fina y fina hasta que nos centramos en el mejor modelo. Pero hay mejores formas de abordar ese problema como herramientas de optimización numéricas. Algunas de ellas son:
 
-La intuición de Newton-Raphson es bastante simple: Se elige un punto de partida y se busca la pendiente más inclinada. Luego, desciende por esa pendiente un poco, y se repite una y otra vez, hasta que no se puede seguir bajando. 
+* Búsqueda __Newton-Raphson__.
+* **Gradient Descent**
 
+La intuición de estas dos herramientas es bastante simple: Se elige un punto de partida y se busca la pendiente más inclinada. Luego, desciende por esa pendiente un poco, y se repite una y otra vez, hasta que no se puede seguir bajando. 
 
 En R, podemos hacer eso con `optim ()`:
 

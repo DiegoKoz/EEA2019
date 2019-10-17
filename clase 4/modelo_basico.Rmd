@@ -219,7 +219,7 @@ sim1_get_rss <- function(a0, a1) {
 
 # Vectores de parametros
 b0 = seq(2, 6, by = 0.1)
-b1 = seq(1.7, 2.5, length=length(a1))
+b1 = seq(1.7, 2.5, length=length(b0))
 
 # Grilla de modelos
 models_grid <- expand.grid(
