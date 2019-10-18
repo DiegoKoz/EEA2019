@@ -18,6 +18,7 @@ library(robust)
 library(ggridges)
 library(ggthemes)
 library(magrittr)
+library(tidymodels)
 ```
 
 El objetivo del ejercicio es comparar el ajuste lineal clásico (por mínimos cuadrados) con el ajuste robusto, en presencia de contaminación de la muestra. Evaluaremos la performance de los estimadores a través del bootstrap.
@@ -204,7 +205,7 @@ en los QQ-plots:
 
 
 ![Bootstrap^[diagrama basado en http://www.texample.net/tikz/examples/bootstrap-resampling/
-]](bootstrap-resampling.png)
+]](bootstrap-resampling.png){width=1000´}
 
 
 - Extraemos una muestra de tamaño 100 con reemplazo de la muestra ${(X_{1i} , X_{2i} , X_{3i} , Y_i )}_{1≤i≤n}$ .
@@ -334,7 +335,7 @@ parametros
 
 Con todas estas estimaciones podemos graficar los resultados
 
-```{r}
+```{r, fig.height=9, fig.width=9}
 parametros_verdaderos <- data_frame(term=c("(Intercept)","x1","x2","x3"),valor=c(4,1.5,8,-2))
 
 ggplot(parametros, aes(estimate, fill = model))+
@@ -347,7 +348,7 @@ ggplot(parametros, aes(estimate, fill = model))+
   facet_wrap(~term,scales = "free")
 ```
 
-```{r}
+```{r, fig.height=9, fig.width=9}
 ggplot(parametros, aes(estimate,y=model, fill = model))+
   geom_density_ridges(alpha=.6)+
   theme_minimal()+
