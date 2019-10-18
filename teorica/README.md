@@ -9,7 +9,8 @@
 ## Regresión lineal
 
 ### [Notas de clase](http://mate.dm.uba.ar/~meszre/apunte_regresion_lineal_szretter.pdf)
-### [Ejercicios-consignas](Ejercicios Modelo Lineal.pdf)
+
+### [Interpretación de parametros log-log, log-lin](Wooldrige.pdf)
 
 
 ## Bibliografía de consulta
