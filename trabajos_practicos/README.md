@@ -17,5 +17,5 @@
 
 #### Fecha de entrega: 01/11/2019 
 
-- [Consignas](TP-2/tp2_consignas.nb.html)
+- [Consignas](TP-2/tp_2_eea_consignas.nb.html)
 - [Dataset](TP-2/ar_properties.rds)
