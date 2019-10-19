@@ -1,4 +1,7 @@
+
 #### [Materiales clases teóricas](teorica)
+
+*Primer parcial: 9-11*
 
 ## [Trabajos Prácticos](trabajos_practicos)
 
@@ -38,32 +41,36 @@
 
 ### Clase 6: 26-10
 
-- [Muchos modelos](clase 6/muchos_modelos.html)
+- [Muchos modelos (primera parte)](clase 6/muchos_modelos.html)
+
+
+### [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
 
 ### Clase 7: 2-11
 
-- [Regresion Logistica](clase 7/logit.nb.html)
+- [Muchos modelos (segunda parte)](clase 7/muchos_modelos.html)
+
 
 ### Clase 8: 16-11
 
-- [Regularizacion: Ridge, Lasso y Elastic Net](clase 8/regularizacion.nb.html)
+- [Regresion Logistica](clase 8/logit.nb.html)
+
 
 ### Clase 9: 23-11
 
-- [Prophet: implementacion de GAM para series de tiempo](clase 9/prophet_shopping.nb.html)
-- [tidy models](clase 9/tidymodels.nb.html)
+- [Regularizacion: Ridge, Lasso y Elastic Net](clase 9/regularizacion.nb.html)
 
 ### Clase 10: 30-11
 
-- [Redes I: Fully Conected Neural Networks](clase 10/mnist101.nb.html)
+- [Prophet: implementacion de GAM para series de tiempo](clase 10/prophet_shopping.nb.html)
+- [Tidy models](clase 10/tidymodels.nb.html)
 
 ### Clase 11: 7-12
 
-- [Redes II: Convolutional Neural Networks](clase 11/mnist102.nb.html)
+- [Redes I: Fully Conected Neural Networks](clase 11/mnist101.nb.html)
 
+### Clase 12: 14-12
 
-## [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
-
-
+- [Redes II: Convolutional Neural Networks](clase 12/mnist102.nb.html)
 
 [Preguntas parcial](https://images.mentalfloss.com/sites/default/files/styles/mf_image_16x9/public/red-nose-clown-hed.jpg?itok=ZX1GxhNK&resize=1100x1100)
