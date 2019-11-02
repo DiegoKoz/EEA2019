@@ -225,15 +225,15 @@ by_country %>%
   unnest(glnc)
 ```
 
-Si queremos sacarnos de encima las columnas de listas (`data`,`model`,`resids`), necesitamos agregar `.drop = TRUE`:
+Si queremos sacarnos de encima las columnas de listas (`data`,`model`,`resids`), necesitamos agregar `.drop = TRUE`: DEPRECATED --> ahora es con `select`
 
 ```{r}
 glnc <- by_country %>% 
   mutate(glnc = map(model, glance)) %>% 
-  unnest(glnc, .drop = TRUE)
+  unnest(glnc) %>% 
+  select(-c(data,model,resids))
 glnc
 ```
-
 
 Podemos empezar a buscar los peores modelos ordenando por $R^2$
 
@@ -303,7 +303,8 @@ Por ejemplo, obtengamos estos valores para todas las regresiones. Para ello, nec
 ```{r}
 tdy <- by_country %>% 
   mutate(tdy = map(model, tidy)) %>% 
-  unnest(tdy, .drop = TRUE)
+  unnest(tdy) %>% 
+  select(-c(data,model,resids))
 tdy
 ```
 
@@ -395,7 +396,8 @@ by_country %>%
 ```{r}
 by_country %>%
   mutate(agmnt = map2( model,data,augment)) %>% 
-  unnest(agmnt, .drop = TRUE)
+  unnest(agmnt) %>% 
+  select(-c(data,model,resids))
 ```
 
 
