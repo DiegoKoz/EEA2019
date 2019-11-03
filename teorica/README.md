@@ -10,8 +10,9 @@
 
 ### [Notas de clase](http://mate.dm.uba.ar/~meszre/apunte_regresion_lineal_szretter.pdf)
 
-### [Interpretación de parametros log-log, log-lin](Wooldrige.pdf)
+### [Presentación Robustez](robustezeea2019.pdf)
 
+### [Interpretación de parametros log-log, log-lin](Wooldrige.pdf)
 
 ## Bibliografía de consulta
 
@@ -21,6 +22,7 @@
 1. [Friedman, Jerome, Trevor Hastie, and Robert Tibshirani. The elements of statistical learning. Vol. 1. No. 10. New York: Springer series in statistics, 2001.](https://web.stanford.edu/~hastie/Papers/ESLII.pdf)
 1. [Efron, Bradley, and Trevor Hastie. Computer age statistical inference. Vol. 5. Cambridge University Press, 2016.](https://web.stanford.edu/~hastie/CASI_files/PDF/casi.pdf)
 1. [Wickham, Hadley, and Garrett Grolemund. R for data science: import, tidy, transform, visualize, and model data. " O'Reilly Media, Inc.", 2016.](https://es.r4ds.hadley.nz/)
+1. [Molnar Cristoph. Interpretable Machine Learning: A Guide for Making Black Box Models Explainable, 2019.](https://christophm.github.io/interpretable-ml-book/)
 
 ### Papers
 
