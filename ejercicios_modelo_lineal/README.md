@@ -10,3 +10,6 @@
 
 
 [datos parte 4](parte_4/low_birth_weight_infants.txt)
+
+
+# [Ejercicios de práctica de modelo lineal- Segunda Parte](practicaderegmultiplesegundaparte.zip)
