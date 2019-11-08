@@ -9,6 +9,9 @@
 
 # Materiales para las clases prácticas:
 
+
+- ### [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
+
 ### Clase 1: 07-09
 
 - [Introducción al entorno R.](clase 1/Clase 1- Introduccion.nb.html)
@@ -43,9 +46,6 @@
 
 - [Muchos modelos (primera parte)](clase 6/muchos_modelos.html)
 
-
-### [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
-
 ### Clase 7: 2-11
 
 - [Muchos modelos (segunda parte)](clase 7/muchos_modelos.html)
@@ -54,7 +54,7 @@
 ### Clase 8: 16-11
 
 - [Regresion Logistica](clase 8/logit.nb.html)
-
+- [Tidy models](clase 8/tidymodels.nb.html)
 
 ### Clase 9: 23-11
 
@@ -63,7 +63,7 @@
 ### Clase 10: 30-11
 
 - [Prophet: implementacion de GAM para series de tiempo](clase 10/prophet_shopping.nb.html)
-- [Tidy models](clase 10/tidymodels.nb.html)
+
 
 ### Clase 11: 7-12
 
