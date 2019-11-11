@@ -2,9 +2,10 @@
 
 ## Materiales para clases teóricas:
 
+# Primer parcial
+
 ### [primeras clases](EEA primeras clases.pdf)
 ### [Ejemplo overfitting](Overfitting Avoiding With NN ultimo 2019R.R)
-
 
 ## Regresión lineal
 
@@ -13,6 +14,10 @@
 ### [Presentación Robustez](robustezeea2019.pdf)
 
 ### [Interpretación de parametros log-log, log-lin](Wooldrige.pdf)
+
+# Segundo parcial
+
+### [GLM](GLM.pdf)
 
 ## Bibliografía de consulta
 
