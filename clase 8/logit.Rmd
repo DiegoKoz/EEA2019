@@ -5,15 +5,13 @@ output:
     toc: yes
     toc_float: yes
 author: "Juan Manuel Barriola y Diego Kozlowski"
-date: 27-10-2018
+date: 16-11-2019
 ---
 
 # Primera parte
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-library(dplyr)
-library(ggplot2)
-library(tidyr)
+library(tidyverse)
 library(broom)
 library(ISLR)
 library(GGally)
@@ -22,7 +20,6 @@ library(pROC)
 library(cowplot)
 library(OneR)
 library(rlang)
-library(purrr)
 library(caret)
 set.seed(1992)
 ```
@@ -65,12 +62,12 @@ ggpairs(default,mapping = aes(colour= default)) + theme(axis.text.x = element_te
 
 ¿Y entre income y balance?
 
-¿Cuáles parecen ser buenas variables para predecir la probabilidad de default de una persona?
+¿Cuáles parecen ser buenas variables para discriminar entre quienes defaultean y quienes no?
 
 
 ### Limpieza
 
-Para modelizar va a ser más necesario tener la variable default como numérica. 
+Para modelizar va a ser necesario tener la variable default como numérica. 
 Definimos la variable como {0,1} para los valores {"No","Yes"}
 
 ```{r}
@@ -120,7 +117,7 @@ Parece tener bastantes problemas para estimar la probabilidad de default de los 
 
 Para evitar estos problemas, usamos la **funcion logistica**
 
-$P(X)= \frac{e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}{1+e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}$
+$P(Y=1|X)= \frac{e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}{1+e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}$
 
 El lado derecho se llama **expit**
 
@@ -146,7 +143,7 @@ test <- train_test$test %>% as_tibble()
 
 ## Creación de fórmulas
 
-Para aplicar la regresion logistica primero usamos la funcion `formulas` del paquete **modelr** para crear un objeto que contiene todas las formulas que vamos a utilizar.
+Para aplicar la regresion logistica primero usamos la funcion `formulas` del paquete **modelr** para crear un objeto que contiene todas las fórmulas que vamos a utilizar. En `.response` especificamos la variable respuesta de nuestras fórmulas y luego nombramos las fórmulas que queramos armar.
 
 ```{r}
 logit_formulas <- formulas(.response = ~default, # único lado derecho de las formulas.
@@ -171,6 +168,14 @@ models <- data_frame(logit_formulas) %>% # dataframe a partir del objeto formula
          mod = map(logit_formulas, ~glm(.,family = 'binomial', data = default))) # Que estamos haciendo acá? Que vamos a encontrar en la columna?
 ```
 
+La funcíón `glm()` nos permite crear un modelo lineal generalizado (Generalized Linear Model). Al igual que la función `lm()` toma como argumentos una **formula** y los **datos** pero también se debe especificar el argumento **family**: indicamos la distribución del error y la función link que vamos a utilizar en el modelo. Algunas familias son:
+
+* Binomial: link=logit
+* Poisson: link=log
+* Gaussiana: link= identidad
+
+Como estamos trabajando con un fenómeno que suponemos tiene una distribución binomial, así lo especificamos en el parámetro **family**
+
 ### Modelos simples
 
 Probamos los primeros tres modelos, aquellos que tienen un único predictor. Usamos la función _tidy_ para obtener los parámetros estimados para estos tres modelos.
@@ -184,7 +189,7 @@ models %>%
          p.value=round(p.value,4))
 ```
 
-¿Son significativos?
+Observamos que todos los modelos tienen coeficientes significativos excepto el coeficiente asociado al **Ingreso**, el cual tien un p valor de 0.27.
 
 ¿Qué interpretación pueden darle a estos valores?
 
@@ -339,7 +344,7 @@ Hosmer_Lemeshow_plot(prediction_bad, '.fitted', 'default', 10, 1, color = "fireb
 
 ### Punto de corte
 
-Hasta ahora hemos evaluado el modelo de manera general, pero el resultado final del modelo debe consistir en asignar al individuo una clase predicha. En nuestro caso debemos establecer un punto de corte según el cual vamos a separar a los indivuos en quienes defaultean y quienes no.
+Hasta ahora hemos evaluado el modelo de manera general, pero el resultado final del modelo debe consistir en asignar a la persona una clase predicha. En nuestro caso debemos establecer un punto de corte según el cual vamos a separar a las personas en quienes defaultean y quienes no.
 
 Probamos varios puntos de corte y graficamos el accuracy, la sensibilidad, la especificidad, el recall y la precision para cada uno de ellos.
 
