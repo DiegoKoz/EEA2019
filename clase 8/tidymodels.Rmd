@@ -9,6 +9,7 @@ Las librerías de _Tidymodels_ fueron realizadas con el objetivo de incorporarse
 
 ![](img/ds.png)
 
+Dentro del paquete _tidymodels_ se encuentran otros paquetes, cómo: 
 
 ![](img/tidymodels.png)
 
@@ -32,6 +33,8 @@ Veamos un ejemplo con iris
 
 ### Remuestreo de datos
 
+![](img/rsample_logo.png){width=100}
+
 con `rsample::initial_split()` creamos una división entre train y test
 
 ```{r}
@@ -49,26 +52,29 @@ iris_split %>%
 
 ### Receta de transformaciones
 
+![](img/recipes_logo.png){width=100}
+
 Con `recipes::recipe()` indicamos que comenzamos un pipeline de preprocesamiento, indicando cual es la variable a predecir, con `Species ~.`.
 
 El objetivo de realizar el preprocesamiento de esta manera es que para muchas etapas del preprocesamiento, como puede ser el cálculo de la media para la imputación, sólo podemos utilizar la información del set de entrenamiento para evitar el _information leaking_. Por ello, si construimos un pipeline donde se calcula todo sobre entrenamiento, después es más sencillo reutilizarlo en test, sin cometer errores de este tipo.
 
 utilizando `recipes` __entrenamos__ el preprocesamiento.
 
+- `recipe()` Empieza un nuevo set de transformaciones para ser aplicadas. 
 
-
-
-`recipe()` Empieza un nuevo set de transformaciones para ser aplicadas. 
-
-`prep()` Ejecuta las transformaciones en el set de entrenamiento
+- `prep()` Es el último paso, que indica que hay que ejecutar toods los pasos anteriores sobre los datos.
 
 Cada tranformación es un _step_(paso). Las funciones son tipos específicos de pasos. En este caso utilizamos:
 
-`step_corr()` Elimina las variables que tienen una correlación alta con otras variables
-`step_center()` Centra los datos para que tengan media cero
-`step_scale()` Normaliza los datos para que tengan desvío estandar de 1.
+- `step_corr()` Elimina las variables que tienen una correlación alta con otras variables
+- `step_center()` Centra los datos para que tengan media cero
+- `step_scale()` Normaliza los datos para que tengan desvío estandar de 1.
 
-Las funciones `all_predictors` y `all_outcomes` ayudan a espcificar sobre qué valores hay que realizar las transformaciones.
+También hay una serie de funciones para seleccionar las variables sobre las que se va a operar:
+
+- `all_predictors` y `all_outcomes` ayudan a espcificar sobre las variables predictivas y predictoras.
+- Se puede definir otros roles con `update_role` y luego seleccionarlas vía `has_role`
+- `all_numeric`, `all_nominal` y `has_type` permite elegir las variables según su tipo.
 
 ```{r warning=FALSE}
 iris_recipe <- training(iris_split) %>%
@@ -81,19 +87,12 @@ iris_recipe <- training(iris_split) %>%
 iris_recipe
 ```
 
+en `iris_recipe` tenemos la __receta__ del preprocesamiento, pero aún no se aplicó sobre ningún set de datos.
 
-### Aplicamos la receta en los datos de test y train
+### Aplicamos la receta en los datos de train y test
 
-Con la función `bake()` podemos aplicar la _receta_ que preparamos antes para los datos de entrenamiento. Para ello el primer objeto que pasamos es la _receta_ y como parámetro de _bake_ pasamos el dataset de test (recuperado con la función `testing` de rsample)
 
-```{r warning=FALSE}
-iris_testing <- iris_recipe %>%
-  bake(testing(iris_split)) 
-
-iris_testing
-```
-
-Dado que la receta ya fue construida con los datos de entrenamiento, no tendría sentido utilizar el mismo pipeline para recuperar estos datos. Para ello utilizamos la función `juice` directamente sobre la receta.
+Dado que la receta fue construida con los datos de entrenamiento, este dataset ya se encuentra implícito en `iris_recipe`. Para extraerlo, ya preprocesado, utilizamos la función `juice` directamente sobre la receta.
 
 
 ```{r warning=FALSE}
@@ -102,7 +101,20 @@ iris_training <- juice(iris_recipe)
  iris_training
 ```
 
+
+Con la función `bake()` podemos aplicar la _receta_ que preparamos antes para los datos de test. Para ello el primer objeto que pasamos es la _receta_ y como parámetro de _bake_ pasamos el dataset de test (recuperado con la función `testing` de rsample)
+
+```{r warning=FALSE}
+iris_testing <- iris_recipe %>%
+  bake(testing(iris_split)) 
+
+iris_testing
+```
+
+
 ## Entrenamiento de modelos
+
+![](img/parsnip_logo.png){width=100}
 
 En R hay muchos paquetes que implementan el mismo tipo de modelo. Normalmente cada implementación define los parámetros del modelo de forma distinta. Por ejemplo, para el modelo Random Forest, la librería `ranger` define el número de árboles como num.trees, mientras que la librería `randomForest` lo nombra ntree. 
 
@@ -116,6 +128,8 @@ Al igual que la vieja librería caret, tidymodels remplaza la interfaz, pero no 
 iris_ranger <- rand_forest(trees = 100, mode = "classification") %>%
   set_engine("ranger") %>%
   fit(Species ~ ., data = iris_training)
+
+iris_ranger
 ```
 
 
@@ -123,6 +137,8 @@ iris_ranger <- rand_forest(trees = 100, mode = "classification") %>%
 iris_rf <-  rand_forest(trees = 100, mode = "classification") %>%
   set_engine("randomForest") %>%
   fit(Species ~ ., data = iris_training)
+
+iris_rf
 ```
 
 
@@ -150,6 +166,8 @@ iris_ranger %>%
 
 
 ## Validación
+
+![](img/yardstick_logo.png){width=100}
 
 Con la función `yardstick::metrics()` podemos medir la performance del modelo. Elige automáticamente las métricas apropiadas dado el tipo de modelo. Necesitmaos aclarar cuales son los datos predichos,_estimate_ y reales, _truth_.
 
