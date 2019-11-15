@@ -191,7 +191,19 @@ models %>%
 
 Observamos que todos los modelos tienen coeficientes significativos excepto el coeficiente asociado al **Ingreso**, el cual tien un p valor de 0.27.
 
-¿Qué interpretación pueden darle a estos valores?
+#### Interpretación de los coeficientes
+
+Recordando la ecuación para modelar la probabilidad:
+
+$P(Y=1|X)= \frac{e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}{1+e^{\beta_0 + \sum\limits_{j=1}^p \beta_j X}}$
+
+Se observa que ahora las variables ya no tienen una relación lineal con la probabilidad. Lo que se observa es que un coeficiente positivo indica que frente a aumentos de dicha variable la probabilidad aumenta mientras que un coeficiente negativo nos indica lo contrario. Para nuestro caso:
+
+* El coeficiente de 0.00548 de la variable **balance** indica que cuando el balance aumenta la **probabilidad de default aumenta**
+* El coeficiente de 0.41322 de la variable **student** indica que cuando una persona es estudiante su **probabilidad de default aumenta** respecto a una persona que no lo es
+* El coeficiente de -0.00001 de la variable income indica que cuando el ingreso aumenta **la probabilidad de default disminuye**
+
+Recomendamos leer el [capítulo de regresión logística](https://christophm.github.io/interpretable-ml-book/logistic.html) de *Interpretable Machine Learning: A Guide for Making Black Box Models Explainable* de Molnar Cristoph para una discusión más profunda de la interpretación de un modelo de regresión logística.
 
 ### Modelo completo
 
@@ -206,7 +218,9 @@ models %>%
          p.value=round(p.value,4))
 ```
 
-¿Que cambios hay respecto a los 3 modelos individuales previos?
+En el modelo con las tres variables los coeficientes de **student** e **income** ha cambiado de signo por lo cual su efecto sobre la probabilidad de default es inverso al que observamos en los modelos simples. También hay que agregar ahora que el efecto de la variable se observa al estar controlando por las dos covariables restantes.
+
+Además se observa que el único coeficiente significativo es el asociado a la variable balance
 
 ### Evaluación de todos los modelos
 
@@ -215,16 +229,18 @@ Con `map()` agregamos la función `glance` para traernos información relevante 
 Con `unnest()` podemos ver la evaluación de cada modelo. Por último ordenamos las modelos por el deviance.
 
 ```{r, warning=FALSE}
+# Calcular las medidas de evaluación para cada modelo
 models <- models %>% 
   mutate(glance = map(mod,glance))
 
+# Obtener las medidas de evaluacion de interes
 models %>% 
   unnest(glance, .drop = TRUE) %>%
+  # Calculo de la deviance explicada
   mutate(perc_explained_dev = 1-deviance/null.deviance) %>% 
   select(-c(models, df.null, AIC, BIC)) %>% 
   arrange(deviance)
 ```
-
 
 El modelo que utiliza las 3 variables es el que minimiza el deviance. 
 Los 3 últimos modelos reducen muy poco el deviance respecto a la deviance nula.
@@ -233,33 +249,35 @@ Los 3 últimos modelos reducen muy poco el deviance respecto a la deviance nula.
 
 Realizamos los gráficos para el modelo completo y uno de los modelos con mayor deviance (student+income).
 
-En este caso estamos:
+Comenzamos agregando las predicciones con `augment` con el parámetro `type="response"`. La función augment hereda el argumento type.predict de la función predict.
 
-1) Agregando las predicciones con `augment` con el parámetro type="response" ¿Por qué hacemos esto? ¿Cuál es el valor por default de este parámetro? 
-2) Armando las curvas ROC con `pROC`
-
+  * Si `type.predict = 'link'` la predicción es en términos de la función link. en nuestro caso son el logaritmo de las odds, es decir, los valores que toma la expresión logit
+  * Si `type.predict = 'response'` la predicción son las probabilidades de que la observación pertenezca a la clase positiva. En nuestro caso, devuelve la probabilidad de la que persona defaultee.
 
 ```{r, warning=FALSE}
+# Añadir las predicciones
 models <- models %>% 
   mutate(pred= map(mod,augment, type.predict = "response"))
 
-models$pred[1]
+#Observaciones con probabilidad más baja
+models$pred[1]$bal %>% arrange(.fitted) %>% head(10)
+
+#Observaciones con probabilidad más alta
+models$pred[1]$bal %>% arrange(desc(.fitted)) %>% head(10)
 ```
 
-
 ```{r}
+# Modelo completo
 prediction_full <- models %>% 
   filter(models=="full") %>% 
   unnest(pred, .drop=TRUE)
-roc_full <- roc(response=prediction_full$default, predictor=prediction_full$.fitted)
 
+#Modelo malo
 prediction_bad <- models %>% 
   filter(models=="stud_inc") %>% 
   unnest(pred, .drop=TRUE)
-
-roc_bad <- roc(response=prediction_bad$default, predictor=prediction_bad$.fitted)
-
 ```
+
 
 #### Violin plots
 
@@ -279,26 +297,17 @@ violin_bad=ggplot(prediction_bad, aes(x=default, y=.fitted, group=default, fill=
 plot_grid(violin_bad, violin_full)
 ```
 
-¿Qué es lo que estamos viendo en ellos? (Especial atención al eje de ordenadas)
+En los gráficos de violin observamos:
+
+  * En el eje de abscisas la clase verdadera: Default o No Default
+  * En el eje de ordenadas la probabilidad predicha por nuestro modelo
+  * El gráfico nos muestra la distribución de la cantidad de observaciones por su clase real y la probabilidad que le asigna nuestro modelo.
 
 ¿Cuál parece ser un punto de corte adecuado para cada modelo?
 
-#### Curvas ROC
-
-```{r}
-ggroc(list(full=roc_full, bad=roc_bad), size=1) + geom_abline(slope = 1, intercept = 1, linetype='dashed') + theme_bw() + labs(title='Curvas ROC', color='Modelo')
-
-print(paste('AUC: Modelo completo', roc_full$auc))
-
-print(paste('AUC: Modelo malo', roc_bad$auc))
-
-```
-
-¿Qué significa cada uno de los ejes?
-
 #### Gráfico de Hosmer-Lemeshow
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 
 Hosmer_Lemeshow_plot <- function(dataset, predicted_column, class_column, bins, positive_value, color='forestgreen', nudge_x=0, nudge_y=0.05){
   "Realiza un grafico de Hosmer-Lemeshow para un dataset"
@@ -338,9 +347,43 @@ Hosmer_Lemeshow_plot(prediction_bad, '.fitted', 'default', 10, 1, color = "fireb
 
 ```
 
-¿Qué vemos en estos gráficos?
+En los gráficos de Hosmer-Lemeshow observamos:
+
+  * En el eje de abscisas la probabilidad predicha de default
+  * En el eje de ordenadas la frecuencia de clase, el cociente entre cantidad de individuos que están en default y el total de individuos
+  * La línea punteada designa la igualdad entre probabilidad predicha y frecuencia de clase
+  * Los círculos, que se construyen de la siguiente manera:
+      * Se dividen a las observaciones en bins en base a la probabilidad predicha
+      * Se calcula la frecuencia de clase para cada bin
+      * En base a estas dos coordenadas se ubica al circulo en el gráfico
+      * El número y tamaño indican la cantidad de observaciones en dicho grupo
+
+Aquellos círculos que se ubiquen por encima de la línea punteada indican que el modelo está subestimando la probabilidad para dichos grupos. Mientras que si los círculos se ubican por debajo el modelo está sobreestimando la probabilidad para dichos grupos.
 
 ¿Para qué valores parece existir una sobreestimación de la probabilidad? ¿Para cuáles subestimación?
+
+#### Curvas ROC
+
+```{r}
+# Calculamos curvas ROC
+roc_full <- roc(response=prediction_full$default, predictor=prediction_full$.fitted)
+
+roc_bad <- roc(response=prediction_bad$default, predictor=prediction_bad$.fitted)
+
+```
+
+Graficamos
+
+```{r}
+ggroc(list(full=roc_full, bad=roc_bad), size=1) + geom_abline(slope = 1, intercept = 1, linetype='dashed') + theme_bw() + labs(title='Curvas ROC', color='Modelo')
+
+print(paste('AUC: Modelo completo', roc_full$auc))
+
+print(paste('AUC: Modelo malo', roc_bad$auc))
+
+```
+
+¿Qué significa cada uno de los ejes?
 
 ### Punto de corte
 
