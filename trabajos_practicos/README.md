@@ -19,3 +19,11 @@
 
 - [Consignas](TP-2/tp_2_eea_consignas.nb.html)
 - [Dataset](TP-2/ar_properties.rds)
+
+### Trabajo Practico 3:
+
+#### Fecha de entrega: 01/12/2019 
+
+- [Consignas](TP-3/tp_3_consignas.nb.html)
+- [Dataset Training](TP-3/titanic_complete_train.csv)
+- [Dataset Testing](TP-3/titanic_complete_test.csv)
