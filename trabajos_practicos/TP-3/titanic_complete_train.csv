@@ -60,7 +60,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 59,1,2,"West, Miss. Constance Mirium",female,5,1,2,C.A. 34651,27.75,NA,S
 60,0,3,"Goodwin, Master. William Frederick",male,11,5,2,CA 2144,46.9,NA,S
 61,0,3,"Sirayanian, Mr. Orsen",male,22,0,0,2669,7.2292,NA,C
-62,1,1,"Icard, Miss. Amelie",female,38,0,0,113572,80,B28,NA
+62,1,1,"Icard, Miss. Amelie",female,38,0,0,113572,80,B28,S
 63,0,1,"Harris, Mr. Henry Birkhardt",male,45,1,0,36973,83.475,C83,S
 64,0,3,"Skoog, Master. Harald",male,4,3,2,347088,27.9,NA,S
 65,0,1,"Stewart, Mr. Albert A",male,41.28138613861386,0,0,PC 17605,27.7208,NA,C
@@ -828,7 +828,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 827,0,3,"Lam, Mr. Len",male,26.507588932806325,0,0,1601,56.4958,NA,S
 828,1,2,"Mallet, Master. Andre",male,1,0,2,S.C./PARIS 2079,37.0042,NA,C
 829,1,3,"McCormack, Mr. Thomas Joseph",male,26.507588932806325,0,0,367228,7.75,NA,Q
-830,1,1,"Stone, Mrs. George Nelson (Martha Evelyn)",female,62,0,0,113572,80,B28,NA
+830,1,1,"Stone, Mrs. George Nelson (Martha Evelyn)",female,62,0,0,113572,80,B28,S
 831,1,3,"Yasbeck, Mrs. Antoni (Selini Alexander)",female,15,1,0,2659,14.4542,NA,C
 832,1,2,"Richards, Master. George Sibley",male,0.83,1,1,29106,18.75,NA,S
 833,0,3,"Saad, Mr. Amin",male,26.507588932806325,0,0,2671,7.2292,NA,C
