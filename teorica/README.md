@@ -18,6 +18,7 @@
 # Segundo parcial
 
 ### [GLM](GLM.pdf)
+### [Robustez y Regularización](robustez_y_regularizacion.pdf)
 
 ## Bibliografía de consulta
 
