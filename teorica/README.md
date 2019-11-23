@@ -19,6 +19,7 @@
 
 ### [GLM](GLM.pdf)
 ### [Robustez y Regularización](robustez_y_regularizacion.pdf)
+### [Prophet: GAM y Series de tiempo](GAM_y_series_de_tiempo.pdf)
 
 ## Bibliografía de consulta
 
