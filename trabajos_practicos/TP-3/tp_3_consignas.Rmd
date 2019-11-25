@@ -41,7 +41,7 @@ El diccionario de datos se puede encontrar [aquí](https://www.kaggle.com/c/tita
     c) Transformar las variables **Survived**,  **Pclass** y **Embarked** a factor
     d) Realizar un gráfico de `ggpairs` para las variables  **Survived**, **Pclass**, **Sex**, **Age** y **Fare** e interpretarlo
     e) Mostrar la distribución de clase (Sobrevivientes vs No Sobrevivientes)
-    f) Dividir al dataset en conjunto de entrenamiento (70% de los datos) y validación (30% de los datos). Volver a analizar la distribución de clase para chequear que este balanceado
+    f) Dividir al dataset en conjunto de entrenamiento (70% de los datos) y validación (30% de los datos). Volver a analizar la distribución de clase para chequear que sea aproximadamente igual entre ambos conjuntos y respecto a la distribución de clase que obtuvieron para todo el dataset en el punto 1)e)
     
     NOTA: Ya hemos imputado los valores faltantes de ciertas variables en este dataset
 
