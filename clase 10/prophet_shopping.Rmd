@@ -1,20 +1,33 @@
 ---
 title: "GAM en series de tiempo: Prophet"
-output: html_notebook
+output: 
+  html_notebook: 
+    toc: yes
+    toc_float: yes
 author: "Juan Manuel Barriola y Diego Kozlowski"
-date: 10-11-2018
+date: 30-11-2019
 ---
 
+<style type="text/css">
+div.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 
-
-```{r}
+```{r, message=FALSE}
 library(dplyr)
 library(ggplot2)
 library(prophet)
 library(lubridate)
 ```
 
+# Problema
+
 ## Exploratorias
+
+El dataset consiste en información real de 8 meses de visitantes de un local de ropa localizado en un shopping de gran tamaño
 
 ```{r}
 shopping <- read.csv('local-shopping_prophet.csv') %>% 
@@ -22,6 +35,11 @@ shopping <- read.csv('local-shopping_prophet.csv') %>%
   mutate(Dia = ymd(Dia))
 glimpse(shopping)
 ```
+
+Se observa que la serie de tiempo presenta un comportamiento cíclico con algunos eventos atípicos:
+
+* Aumentos debidos a promociones y Navidad
+* Caídas por cierre del local o caídas del sistema de medición
 
 ```{r}
 ggplot(shopping, aes(Dia, visitantes)) + geom_line() + theme_bw() + labs(title='Visitantes por dia')
@@ -31,35 +49,51 @@ ggplot(shopping, aes(Dia, visitantes)) + geom_line() + theme_bw() + labs(title='
  ggplot(shopping, aes(Dia, visitantes)) + geom_line() + geom_point(color='forestgreen') + theme_bw() + labs(title='Visitantes por dia')
 ```
 
+# Técnicas de suavizado
+
+Una primera aproximación puede ser tratar de utilizar técnicas de suavizado.
+
+En este caso estamos utilizando **loess** como una herramienta gráfica con el comando `geom_smooth()` de ggplot.
+
 ```{r}
 ggplot(shopping, aes(Dia, visitantes)) + geom_point(color='forestgreen') + geom_smooth() + theme_bw() + labs(title='Visitantes por dia: Suavizado')
 ```
 
-## Pruebas LOESS
+Si bien está suavizando, el resultado es bastante pobre ya que el modelo no está logrando representar bien la variabilidad de los datos.
 
-```{r}
+## Distintas ventanas
+
+Ahora realizamos 4 modelos de LOESS modificando la ventana (**span**) para cada uno de ellos.
+
+```{r, warning=FALSE}
 loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.01)
 shopping['loess']=predict(loess,shopping)
 loess_1 = ggplot(shopping, aes(Dia,visitantes)) + geom_point() + geom_line(aes(y=loess), color='firebrick', size=1) + 
   labs(title= "LOESS span:0.01") + theme_bw() 
 
-loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.33)
+loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.25)
 shopping['loess']=predict(loess,shopping)
 loess_2 = ggplot(shopping, aes(Dia,visitantes)) + geom_point() + geom_line(aes(y=loess), color='forestgreen', size=1) + 
-  labs(title= "LOESS span:0.33") + theme_bw() 
+  labs(title= "LOESS span:0.25") + theme_bw() 
 
-loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.66)
+loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.5)
 shopping['loess']=predict(loess,shopping)
 loess_3 = ggplot(shopping, aes(Dia,visitantes)) + geom_point() + geom_line(aes(y=loess), color='steelblue', size=1) + 
-  labs(title= "LOESS span:0.66") + theme_bw() 
+  labs(title= "LOESS span:0.50") + theme_bw() 
 
-loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.99)
+loess=stats::loess(visitantes~as.numeric(Dia), data = shopping, na.action = 'na.exclude', model = T, span=0.75)
 shopping['loess']=predict(loess,shopping)
 loess_4 = ggplot(shopping, aes(Dia,visitantes)) + geom_point() + geom_line(aes(y=loess), color='purple', size=1) + 
-  labs(title= "LOESS span:0.99") + theme_bw() 
+  labs(title= "LOESS span:0.75") + theme_bw() 
 
 cowplot::plot_grid(loess_1, loess_2, loess_3,loess_4)
 ```
+
+Se nota que para un **span muy pequeño** nuestro modelo va a tener un problema de **OVERFITTING**: no va a poder generalizar. Mientras que para **spans grandes** tenemos un problema de **UNDERFITTING**: nuestro modelo no logra captar bien la variabilidad del fenómeno.
+
+# Prophet
+
+Vamos a trabajar sobre la implementación de Prophet en R.
 
 ## Preparacion del dataset
 
@@ -78,6 +112,10 @@ prophet_df = shopping %>% select(Dia, visitantes) %>% rename(., ds=Dia, y=visita
 
 ## Modelo
 
+Recordemos que el modelo subyacente es el propuesto por Harvey & Peters (1990): 
+
+$y(t)=g(t)+s(t)+h(t)+\epsilon_t$
+
 Hay muchos parametros para tener en cuenta. Veremos algunos:
 
   * **df**: dataframe
@@ -90,7 +128,7 @@ Hay muchos parametros para tener en cuenta. Veremos algunos:
   
   *  **holidays**: dataframe con fechas de vacaciones/eventos especiales
 
-### Modelo basico
+### Modelo básico
 
 La funcion `prophet` crea el modelo, podemos pasarle o no el dataframe.
 
@@ -102,9 +140,10 @@ prophet_base=prophet()
 # Le pasamos el dataset
 prophet_base = fit.prophet(m = prophet_base, prophet_df) 
 ```
-Fijense que el modelo automaticamente deshabilita la estacionalidad anual y diaria.
 
-#### Grafico del modelo
+Notemos que el modelo automaticamente deshabilita la estacionalidad anual y diaria.
+
+#### Gráfico del modelo
 
 Llamando a `plot` obtenemos el valor predicho del modelo y el valor original.
 
@@ -122,13 +161,15 @@ La funcion `prophet_plot_components` nos devuelve los efectos de los componentes
 prophet_plot_components(prophet_base, fcst=predict(prophet_base, prophet_df)) +theme_bw()
 ```
 
+En este caso tenemos la tendencia de los visitantes y la estacionalidad semanal. Esta última parece tener bastante sentido ya que nos muestra que hay mayor cantidad de visitantes durante el fin de semana.
+
 #### Diagnostico del modelo
 
 La funcion `cross_validation` permite realizar pronosticos realizando un esquema de cross-validation temporal y, a partir de ellos, obtener ciertas metricas de performance.
 
-  * **horizon**: horizonte del pronostico
+  * **horizon**: horizonte del pronostico. Cuánto tiempo deseo predecir
   
-  * **period**: periodo entre fechas de analisis
+  * **period**: periodo entre fechas de analisis. Cuánto voy corriendo mi ventana
   
    * **initial**: periodo inicial de entrenamiento
 
@@ -142,9 +183,12 @@ La funcion `performance_metrics` computa varias metricas de performance a partir
 ```{r}
 performance_metrics(cv_base, rolling_window = 0.5)
 ```
+
 ### Modelo con estacionalidad mensual
 
-La funcion `add_seasonality` nos permite agregar nuevas estacionalidades. Definimos:
+La funcion `add_seasonality` nos permite agregar nuevas estacionalidades. Las estacionalidades se modelan utilizando series de Fourier que nosotros debemos definir.
+
+Definimos:
 
   * **m**: modelo
   
@@ -158,11 +202,11 @@ La funcion `add_seasonality` nos permite agregar nuevas estacionalidades. Defini
 # Llamamos solo al modelo
 prophet_mensual=prophet()
 # Agregamos la estacionalidad mensual
-prophet_mensual=add_seasonality(prophet_mensual, name='monthly', period=30.5, fourier.order = 4)
+prophet_mensual=add_seasonality(prophet_mensual, name='monthly', period=365/12, fourier.order = 4)
 # Le pasamos el dataset
 prophet_mensual = fit.prophet(m = prophet_mensual, prophet_df) 
 ```
-Fijense que el modelo automaticamente deshabilita la estacionalidad anual y diaria.
+Notemos que sigue deshabilitando la estacionalidad anual y diaria.
 
 #### Grafico del modelo
 
@@ -178,8 +222,9 @@ La funcion `prophet_plot_components` nos devuelve los efectos de los componentes
 prophet_plot_components(prophet_mensual, fcst=predict(prophet_mensual, prophet_df)) +theme_bw()
 ```
 
-#### Diagnostico del modelo
+Notemos que la tendencia y estacionalidad semanal se mantiene y ahora se agrega la tendencia mensual que habíamos incorporado. Nos indica que el ciclo mensual se caracteriza por un crecimiento en la mitad de mes.
 
+#### Diagnostico del modelo
 
 ```{r, message=FALSE, echo=FALSE, results='hide'}
 cv_mensual = cross_validation(prophet_mensual, initial = 45, period = 7, horizon = 15, units = 'days')
@@ -194,13 +239,14 @@ performance_metrics(cv_mensual, rolling_window = 0.5)
 
 ### Modelo completo 
 
-Como ultimo paso vamos a agregar las ventas de navidad y ciertos dias de promociones como eventos especiales
+Como último paso vamos a agregar las ventas de navidad y ciertos dias de promociones como eventos especiales
 
 #### Dataframe de eventos
 
 Creamos el dataframe de eventos con: nombre del evento, fechas y una "ventana" para definir si el evento se estira a ciertos dias.
 
-```{r}
+```{r, warning=FALSE}
+# Navidad
 christmas = data.frame(holiday= 'christmas',
   ds=ymd(c('2017-12-16','2017-12-17','2017-12-18',
                         '2017-12-19','2017-12-20','2017-12-21',
@@ -208,6 +254,7 @@ christmas = data.frame(holiday= 'christmas',
   lower_window= 0,
   upper_window= 0)
 
+# Promociones
 big_sales = data.frame(
   holiday= 'big_sales',
   ds= ymd(c('2017-09-16','2017-10-08','2017-10-14',
@@ -243,8 +290,9 @@ La funcion `prophet_plot_components` nos devuelve los efectos de los componentes
 prophet_plot_components(prophet_full, fcst=predict(prophet_full, prophet_df)) +theme_bw()
 ```
 
-#### Diagnostico del modelo
+La tendencia y estacionalidad semanal se mantienen aproximadamente igual. La estacionalidad mensual cambia bastante y se observa que existen tres picos en el ciclo mensual. Por su parte, los eventos se modelan como pequeños saltos o picos.
 
+#### Diagnostico del modelo
 
 ```{r, message=FALSE, echo=FALSE, results='hide'}
 cv_full = cross_validation(prophet_full, initial = 45, period = 7, horizon = 15, units = 'days')
@@ -258,7 +306,8 @@ performance_metrics(cv_full, rolling_window = 0.5)
 
 ## Graficos interactivos
 
+Prophet también nos permite realizar gráficos interactivos que suelen ser muy útiles para presentar los resultados.
 
-```{r}
+```{r, fig.width=10,fig.height=6}
 dyplot.prophet(prophet_full, fcst=predict(prophet_full, prophet_df))
 ```
