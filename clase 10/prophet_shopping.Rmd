@@ -308,6 +308,6 @@ performance_metrics(cv_full, rolling_window = 0.5)
 
 Prophet también nos permite realizar gráficos interactivos que suelen ser muy útiles para presentar los resultados.
 
-```{r, fig.width=10,fig.height=6}
+```{r, fig.width=8,fig.height=6}
 dyplot.prophet(prophet_full, fcst=predict(prophet_full, prophet_df))
 ```
