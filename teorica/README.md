@@ -21,6 +21,15 @@
 ### [Robustez y Regularización](robustez_y_regularizacion.pdf)
 ### [Prophet: GAM y Series de tiempo](GAM_y_series_de_tiempo.pdf)
 
+### [Projection Pursuit Regression & Neural Nets](SMOOTHERS, GAM, QR, PPR y ANN.pdf)
+### [Redes Neuronales](IA con R 10.pdf)
+
+### Código
+- #### [ejemplo PPR](PPR example.R)
+- #### [ejemplo Redes Neuronales](Ejemplo simple de GAM, PPR y ANN con Advertising dataset.R)
+
+
+
 ## Bibliografía de consulta
 
 ### Libros
