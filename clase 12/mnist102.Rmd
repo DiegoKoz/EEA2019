@@ -1,7 +1,7 @@
 ---
-title: "Clase 13. Redes Neuronales II^[Estas notas estan basadas en https://tensorflow.rstudio.com/keras/#tutorials]"
+title: "Clase 12. Redes Neuronales II^[Estas notas estan basadas en https://tensorflow.rstudio.com/keras/#tutorials]"
 author: "Diego Kozlowski y Juan Barriola"
-date: 8-12-2018
+date: 14-12-2018
 output: 
   html_notebook: 
     toc: true
@@ -22,7 +22,7 @@ Vamos a utilizar la librería
 
 #### [__KERAS__](https://keras.rstudio.com/)
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # devtools::install_github("rstudio/keras")
 library(keras)
 # install_keras()
@@ -170,7 +170,15 @@ La arquitectura de esta red es básicamente la siguiente:
 
 ### `layer_conv_2d`
 
-![convolución^[http://www.tbluche.com/files/MeetupSaoPaulo2017.pdf]](img/convolution.png)
+![convolución^[http://www.tbluche.com/files/MeetupSaoPaulo2017.pdf]](img/convolution.png){width=500}
+
+
+![movimiento^[https://ailephant.com/computer-vision-convolutional-neural-networks/]](img/convolutional_movement.gif){width=250}
+
+![filtros de caras^[https://devblogs.nvidia.com/deep-learning-nutshell-core-concepts/hierarchical_features/]](img/hierarchical_features.png){width=600}
+
+
+![filtros de colores^[https://ailephant.com/computer-vision-convolutional-neural-networks/]](img/filters.png){width=400}
 
 
 - La capa de convoluciones construye pequeños _filtros_ o _kernels_ de la dimensión `kernel_size()` que pasan por el input original realizando una _convolución_. 
@@ -396,8 +404,8 @@ modelo_preentrenado %>% predict_classes(x_test) %>% head(.)
 ```
 
 
-
 -------
+
 
 Otros recursos interesantes:
 
