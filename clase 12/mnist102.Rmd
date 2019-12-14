@@ -183,9 +183,18 @@ La arquitectura de esta red es básicamente la siguiente:
 
 - La capa de convoluciones construye pequeños _filtros_ o _kernels_ de la dimensión `kernel_size()` que pasan por el input original realizando una _convolución_. 
 
-- El filtro _barre_ la imagen original, moviéndose de a `strides()` posiciones. Por default se mueve de a 1 lugar.
+- El kernel _barre_ la imagen original, moviéndose de a `strides()` posiciones. Por default se mueve de a 1 lugar.
 
 - Notemos que si el filtro es de 3x3 y el stride es 1, entonces la imagen original va a perder 2 pixels de largo y 2 pixels de ancho.
+
+Por cada uno de los outputs de la capa anterior,_Din_, se generan tantos kernels como _Dout_. Al igual que en las Fully Connected, las matrices de las capas anteriores, convolucionadas, se suman, se les agrega el bias, y se pasan por la función de activación.
+
+![Composición de filtros^[https://towardsdatascience.com/a-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215]](img/Dimensiones_conv.png){width=800}
+
+![Suma de Kernels^[https://towardsdatascience.com/intuitively-understanding-convolutions-for-deep-learning-1f6f42faee1]](img/conv2d.gif){width=500}
+
+![Bias^[https://towardsdatascience.com/intuitively-understanding-convolutions-for-deep-learning-1f6f42faee1]](img/bias_conv2d.gif){width=400}
+
 
 
 ### `layer_max_pooling_2d`
