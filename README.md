@@ -10,6 +10,15 @@
 # Materiales para las clases prácticas:
 
 
+Ejectuar la siguiente linea de código en R
+```r
+usethis::use_course('https://github.com/DiegoKoz/EEA2019/archive/master.zip')
+```
+
+O alternativamente descargar el siguiente archivo:
+
+[![](img/Download.png)](https://github.com/DiegoKoz/EEA2019/archive/master.zip)
+
 - ### [Taller Desarrollo de paquetes](pkg-dev/desarrollo_paquetes.nb.html)
 
 ### Clase 1: 07-09
